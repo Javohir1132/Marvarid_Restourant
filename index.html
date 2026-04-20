@@ -1,11 +1,2269 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyProjects</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0b0f;
+  --bg2: #111318;
+  --bg3: #181b22;
+  --surface: #1e2230;
+  --surface2: #252a38;
+  --border: #2a3048;
+  --border2: #353d58;
+  --text: #e8eaf0;
+  --text2: #9aa0b8;
+  --text3: #636b8a;
+  --accent: #4f7cff;
+  --accent2: #2d54e8;
+  --accent-glow: rgba(79,124,255,0.18);
+  --cyan: #00d4ff;
+  --cyan-dim: rgba(0,212,255,0.1);
+  --danger: #ff4f6a;
+  --danger-dim: rgba(255,79,106,0.1);
+  --success: #2dd4a0;
+  --success-dim: rgba(45,212,160,0.1);
+  --warning: #ffad4f;
+  --warning-dim: rgba(255,173,79,0.1);
+  --sidebar-w: 240px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 18px;
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Instrument Sans', sans-serif;
+  --font-size: 14px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.6);
+}
+[data-theme="light"] {
+  --bg: #f0f2f8;
+  --bg2: #e8eaf4;
+  --bg3: #dde0ee;
+  --surface: #ffffff;
+  --surface2: #f4f5fb;
+  --border: #dce0ef;
+  --border2: #c8cfe6;
+  --text: #1a1d2e;
+  --text2: #4a5278;
+  --text3: #8890b0;
+  --accent: #3d6af0;
+  --accent2: #2251d6;
+  --accent-glow: rgba(61,106,240,0.12);
+  --cyan: #0099cc;
+  --cyan-dim: rgba(0,153,204,0.1);
+  --danger: #e0294a;
+  --danger-dim: rgba(224,41,74,0.08);
+  --success: #1da87c;
+  --success-dim: rgba(29,168,124,0.1);
+  --warning: #d4861f;
+  --warning-dim: rgba(212,134,31,0.1);
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.14);
+}
+[data-font-size="small"] { --font-size: 12px; }
+[data-font-size="medium"] { --font-size: 14px; }
+[data-font-size="large"] { --font-size: 16px; }
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: var(--font-size); }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 10px; }
+
+/* ========== LOGIN ========== */
+#login-screen {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s, transform 0.5s;
+}
+#login-screen.hidden { opacity: 0; pointer-events: none; transform: scale(0.96); }
+.login-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 48px 44px;
+  width: 420px;
+  max-width: 95vw;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.login-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--cyan));
+}
+.login-brand {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+}
+.login-sub { color: var(--text3); font-size: 0.9rem; margin-bottom: 36px; }
+.form-group { margin-bottom: 18px; }
+.form-label {
+  display: block; font-size: 0.75rem; font-weight: 600;
+  color: var(--text2); margin-bottom: 7px; letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+.form-input {
+  width: 100%;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  font-size: 0.92rem;
+  font-family: var(--font-body);
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.form-input::placeholder { color: var(--text3); }
+
+/* ========== BUTTONS ========== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+  letter-spacing: 0.1px;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 4px 16px var(--accent-glow); }
+.btn-secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--border); color: var(--text); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { opacity: 0.85; }
+.btn-ghost { background: transparent; color: var(--text2); }
+.btn-ghost:hover { background: var(--surface2); color: var(--text); }
+.btn-full { width: 100%; }
+.btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+.btn-lg { padding: 13px 24px; font-size: 1rem; }
+
+.login-error {
+  background: var(--danger-dim);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  margin-bottom: 16px;
+  display: none;
+}
+.login-error.show { display: block; }
+
+/* ========== APP LAYOUT ========== */
+#app { display: flex; min-height: 100vh; opacity: 0; transition: opacity 0.4s; }
+#app.visible { opacity: 1; }
+
+/* ========== SIDEBAR ========== */
+#sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  position: fixed; top: 0; left: 0; bottom: 0;
+  z-index: 100;
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.sidebar-header { padding: 24px 20px 16px; border-bottom: 1px solid var(--border); }
+.sidebar-brand {
+  font-family: var(--font-display);
+  font-size: 1.15rem; font-weight: 800;
+  color: var(--text); letter-spacing: -0.3px; margin-bottom: 14px;
+}
+.sidebar-brand span { color: var(--accent); }
+.sidebar-user-name { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.sidebar-clock {
+  font-size: 0.78rem; color: var(--text3);
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-display); letter-spacing: 0.5px;
+}
+.sidebar-nav { flex: 1; padding: 12px 10px; overflow-y: auto; }
+.nav-item {
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 12px; border-radius: var(--radius-sm);
+  cursor: pointer; color: var(--text2);
+  font-size: 0.88rem; font-weight: 500;
+  transition: all 0.15s; margin-bottom: 2px;
+  position: relative; border: none; background: none; width: 100%; text-align: left;
+}
+.nav-item:hover { background: var(--surface); color: var(--text); }
+.nav-item.active { background: var(--accent-glow); color: var(--accent); }
+.nav-item.active::before {
+  content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
+  width: 3px; border-radius: 0 3px 3px 0; background: var(--accent);
+}
+.nav-icon { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.8; }
+.nav-item.active .nav-icon { opacity: 1; }
+.sidebar-footer { padding: 12px 10px; border-top: 1px solid var(--border); }
+.logout-btn {
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 12px; border-radius: var(--radius-sm);
+  cursor: pointer; color: var(--danger);
+  font-size: 0.88rem; font-weight: 500;
+  border: none; background: none; width: 100%;
+  transition: all 0.15s;
+}
+.logout-btn:hover { background: var(--danger-dim); }
+
+/* ========== MAIN ========== */
+#main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
+.page-header {
+  padding: 24px 32px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg); position: sticky; top: 0; z-index: 50;
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem; font-weight: 700;
+  color: var(--text); letter-spacing: -0.5px;
+}
+.page-actions { display: flex; gap: 10px; align-items: center; }
+.content-area { padding: 28px 32px; flex: 1; }
+
+/* ========== SECTIONS ========== */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ========== STATS ========== */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px; margin-bottom: 28px;
+}
+.stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 22px 20px;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.stat-card:hover { border-color: var(--border2); box-shadow: var(--shadow); }
+.stat-label { font-size: 0.72rem; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+.stat-value { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+.stat-sub { font-size: 0.78rem; color: var(--text3); margin-top: 5px; }
+.stat-accent { color: var(--accent); }
+.stat-success { color: var(--success); }
+.stat-danger { color: var(--danger); }
+.stat-warning { color: var(--warning); }
+
+/* ========== FILTER BAR ========== */
+.filter-bar {
+  display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.search-input {
+  flex: 1; min-width: 200px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 9px 14px;
+  color: var(--text); font-family: var(--font-body); font-size: 0.9rem;
+  outline: none; transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-select {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 9px 14px;
+  color: var(--text); font-family: var(--font-body); font-size: 0.88rem;
+  outline: none; cursor: pointer;
+}
+
+/* ========== PROJECT CARD ========== */
+.projects-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+.project-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  position: relative;
+}
+.project-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--border2); }
+
+/* Card action menu */
+.card-menu-btn {
+  position: absolute; top: 12px; right: 12px;
+  width: 32px; height: 32px;
+  background: rgba(10,11,15,0.72);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 10;
+  color: #fff; transition: all 0.2s;
+  opacity: 0;
+}
+.project-card:hover .card-menu-btn { opacity: 1; }
+.card-menu-btn:hover { background: rgba(79,124,255,0.5); border-color: var(--accent); }
+
+.card-dropdown {
+  position: absolute; top: 50px; right: 12px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  min-width: 148px;
+  box-shadow: var(--shadow-lg);
+  z-index: 20;
+  overflow: hidden;
+  opacity: 0; pointer-events: none;
+  transform: translateY(-6px) scale(0.96);
+  transition: all 0.18s cubic-bezier(0.4,0,0.2,1);
+}
+.card-dropdown.open {
+  opacity: 1; pointer-events: all;
+  transform: translateY(0) scale(1);
+}
+.card-dropdown-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  font-size: 0.84rem; font-weight: 500;
+  color: var(--text2); cursor: pointer;
+  transition: all 0.12s; border: none; background: none; width: 100%; text-align: left;
+}
+.card-dropdown-item:hover { background: var(--surface); color: var(--text); }
+.card-dropdown-item.danger { color: var(--danger); }
+.card-dropdown-item.danger:hover { background: var(--danger-dim); }
+.card-dropdown-item svg { flex-shrink: 0; opacity: 0.75; }
+.card-dropdown-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+/* ===== PROJECT IMAGE — asosiy tuzatish ===== */
+.project-img-wrap {
+  position: relative;
+  width: 100%; height: 180px;
+  background: linear-gradient(135deg, var(--bg3), var(--surface2));
+  overflow: hidden;
+}
+.project-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  position: absolute; inset: 0;
+}
+.project-img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px;
+  color: var(--text3); font-size: 0.85rem;
+  position: absolute; inset: 0;
+}
+/* img yuklanganida placeholder ko'rinmasin */
+.project-img-wrap.loaded .project-img-placeholder { display: none; }
+/* img error bo'lganida yoki yo'q bo'lganida img ko'rinmasin */
+.project-img-wrap:not(.loaded) .project-img { display: none; }
+
+.project-body { padding: 18px; }
+.project-header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.project-name { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--text); }
+.status-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;
+}
+.status-active { background: var(--success-dim); color: var(--success); }
+.status-archive { background: var(--surface2); color: var(--text3); }
+.status-progress { background: var(--warning-dim); color: var(--warning); }
+.project-desc { font-size: 0.84rem; color: var(--text2); line-height: 1.55; margin-bottom: 12px; }
+.tech-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.tech-tag {
+  background: var(--bg3); color: var(--text2);
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 3px 9px; font-size: 0.7rem; font-weight: 600;
+}
+.project-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px; }
+.project-price { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--success); }
+.project-date { font-size: 0.72rem; color: var(--text3); }
+.project-links { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.project-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 6px;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); font-size: 0.72rem; text-decoration: none;
+  transition: all 0.15s;
+}
+.project-link:hover { border-color: var(--accent); color: var(--accent); }
+.pay-status { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+.pay-paid { background: var(--success-dim); color: var(--success); }
+.pay-pending { background: var(--warning-dim); color: var(--warning); }
+.project-note { background: var(--bg3); border-radius: var(--radius-sm); padding: 10px 12px; margin-top: 8px; font-size: 0.82rem; color: var(--text2); border-left: 3px solid var(--accent); }
+
+/* ========== MODAL ========== */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  width: 640px;
+  max-width: 96vw; max-height: 92vh;
+  overflow-y: auto;
+  transform: translateY(24px) scale(0.97);
+  transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: var(--shadow-lg);
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+.modal-header {
+  padding: 22px 26px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; background: var(--bg); z-index: 1;
+}
+.modal-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; letter-spacing: -0.2px; }
+.modal-close {
+  background: none; border: none; cursor: pointer;
+  color: var(--text3); padding: 6px; border-radius: 6px; transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-close:hover { background: var(--surface2); color: var(--text); }
+.modal-body { padding: 0; }
+.modal-footer {
+  padding: 16px 26px 22px;
+  display: flex; gap: 10px; justify-content: flex-end;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  position: sticky; bottom: 0; z-index: 1;
+}
+
+/* ========== FORM REDESIGN ========== */
+.form-section {
+  padding: 20px 26px;
+  border-bottom: 1px solid var(--border);
+}
+.form-section:last-child { border-bottom: none; }
+.form-section-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.form-section-icon {
+  width: 30px; height: 30px;
+  background: var(--accent-glow);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent); flex-shrink: 0;
+}
+.form-section-label {
+  font-family: var(--font-display);
+  font-size: 0.85rem; font-weight: 700;
+  color: var(--text); letter-spacing: -0.1px;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.form-group { margin-bottom: 14px; }
+.form-group:last-child { margin-bottom: 0; }
+
+.form-textarea {
+  width: 100%; background: var(--surface);
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 10px 14px; font-size: 0.9rem;
+  font-family: var(--font-body); color: var(--text);
+  resize: vertical; min-height: 90px; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.form-textarea::placeholder { color: var(--text3); }
+
+/* Image upload */
+.img-upload-area {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 28px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+}
+.img-upload-area:hover { border-color: var(--accent); background: var(--accent-glow); }
+.img-upload-area.has-preview { padding: 0; border-style: solid; border-color: var(--border2); }
+.img-preview {
+  width: 100%; height: 160px; object-fit: cover;
+  border-radius: calc(var(--radius-sm) - 2px); display: block;
+}
+.img-upload-placeholder { pointer-events: none; }
+.img-upload-icon { color: var(--text3); margin-bottom: 8px; }
+.img-upload-text { font-size: 0.85rem; font-weight: 600; color: var(--text2); margin-bottom: 4px; }
+.img-upload-sub { font-size: 0.75rem; color: var(--text3); }
+.img-clear-btn {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 6px;
+  color: #fff; font-size: 0.72rem; font-weight: 600;
+  padding: 4px 8px; cursor: pointer; transition: all 0.15s;
+  z-index: 2;
+}
+.img-clear-btn:hover { background: var(--danger); border-color: var(--danger); }
+
+/* Tag input */
+.tag-input-wrap {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 8px; cursor: text;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  min-height: 44px; align-items: center;
+}
+.tag-input-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.tag-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--accent-glow); border: 1px solid rgba(79,124,255,0.3);
+  border-radius: 6px; padding: 3px 8px; font-size: 0.76rem; font-weight: 600;
+  color: var(--accent);
+}
+.tag-chip-remove {
+  background: none; border: none; cursor: pointer;
+  color: var(--accent); padding: 0; line-height: 1; font-size: 1rem;
+  opacity: 0.7; transition: opacity 0.15s;
+}
+.tag-chip-remove:hover { opacity: 1; color: var(--danger); }
+.tag-input {
+  border: none; outline: none; background: none;
+  color: var(--text); font-family: var(--font-body);
+  font-size: 0.88rem; min-width: 80px; flex: 1;
+}
+.tag-input::placeholder { color: var(--text3); }
+
+/* Select styled */
+.form-select {
+  width: 100%; background: var(--surface);
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 11px 14px; font-size: 0.92rem;
+  font-family: var(--font-body); color: var(--text);
+  outline: none; cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23636b8a' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+.form-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+/* Status row inside form */
+.status-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.status-opt {
+  flex: 1; min-width: 90px;
+  padding: 10px 14px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); background: var(--surface);
+  color: var(--text2); font-family: var(--font-body);
+  font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; text-align: center;
+}
+.status-opt:hover { border-color: var(--border2); color: var(--text); }
+.status-opt.sel-active { border-color: var(--success); background: var(--success-dim); color: var(--success); }
+.status-opt.sel-progress { border-color: var(--warning); background: var(--warning-dim); color: var(--warning); }
+.status-opt.sel-archive { border-color: var(--text3); background: var(--surface2); color: var(--text2); }
+.status-opt.sel-paid { border-color: var(--success); background: var(--success-dim); color: var(--success); }
+.status-opt.sel-pending { border-color: var(--warning); background: var(--warning-dim); color: var(--warning); }
+
+/* Link input */
+.link-input-group {
+  display: flex; align-items: center; gap: 0;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.link-input-group:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.link-input-prefix {
+  padding: 0 12px; background: var(--bg3);
+  border-right: 1px solid var(--border);
+  display: flex; align-items: center; height: 44px;
+  color: var(--text3); flex-shrink: 0;
+}
+.link-input-prefix svg { width: 16px; height: 16px; }
+.link-input-field {
+  flex: 1; border: none; outline: none; background: none;
+  padding: 11px 12px; font-size: 0.88rem;
+  font-family: var(--font-body); color: var(--text);
+}
+.link-input-field::placeholder { color: var(--text3); }
+
+/* ========== CALENDAR ========== */
+.calendar-wrapper { display: grid; grid-template-columns: 1fr 300px; gap: 24px; }
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.cal-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal-day-name { text-align: center; font-size: 0.7rem; font-weight: 700; color: var(--text3); text-transform: uppercase; padding: 8px 4px; letter-spacing: 0.5px; }
+.cal-day {
+  aspect-ratio: 1; border-radius: var(--radius-sm);
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  padding: 6px 4px; cursor: pointer;
+  transition: background 0.15s; font-size: 0.85rem; color: var(--text2);
+  position: relative; min-height: 48px;
+}
+.cal-day:hover { background: var(--surface2); }
+.cal-day.today { background: var(--accent-glow); color: var(--accent); font-weight: 700; }
+.cal-day.other-month { color: var(--text3); opacity: 0.5; }
+.cal-day.has-events::after {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent); margin-top: 2px; display: block;
+}
+.cal-day-num { font-weight: 500; }
+.event-count {
+  font-size: 0.6rem; background: var(--accent); color: #fff;
+  border-radius: 8px; padding: 1px 5px; margin-top: 1px; font-weight: 700;
+}
+.cal-sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+.cal-sidebar-title { font-family: var(--font-display); font-weight: 700; margin-bottom: 14px; color: var(--text); }
+.deadline-item { padding: 10px 0; border-bottom: 1px solid var(--border); }
+.deadline-item:last-child { border-bottom: none; }
+.deadline-name { font-size: 0.88rem; font-weight: 500; color: var(--text); }
+.deadline-date { font-size: 0.75rem; color: var(--text3); margin-top: 2px; }
+.deadline-overdue { color: var(--danger); }
+
+/* ========== TASKS ========== */
+.task-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 10px;
+  display: flex; align-items: flex-start; gap: 12px; transition: border-color 0.2s;
+}
+.task-item.done { opacity: 0.6; }
+.task-item.done .task-title { text-decoration: line-through; }
+.task-check {
+  width: 20px; height: 20px; flex-shrink: 0;
+  border: 2px solid var(--border2); border-radius: 6px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; margin-top: 1px;
+}
+.task-check.checked { background: var(--accent); border-color: var(--accent); }
+.task-title { font-size: 0.9rem; font-weight: 500; color: var(--text); }
+.task-meta { font-size: 0.75rem; color: var(--text3); margin-top: 4px; }
+.priority-badge {
+  display: inline-flex; padding: 2px 8px; border-radius: 12px;
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-left: 8px;
+}
+.priority-high { background: var(--danger-dim); color: var(--danger); }
+.priority-med { background: var(--warning-dim); color: var(--warning); }
+.priority-low { background: var(--success-dim); color: var(--success); }
+.task-overdue .task-date { color: var(--danger); }
+.progress-bar { height: 6px; background: var(--bg3); border-radius: 10px; overflow: hidden; margin-top: 6px; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 10px; transition: width 0.5s; }
+.progress-fill.full { background: var(--success); }
+
+/* ========== NOTES ========== */
+.notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.note-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px;
+  transition: transform 0.2s, box-shadow 0.2s; position: relative;
+}
+.note-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.note-card.pinned { border-color: var(--accent); }
+.note-card.pinned::before {
+  content: ''; position: absolute; top: 0; right: 16px;
+  width: 2px; height: 20px; background: var(--accent); border-radius: 0 0 2px 2px;
+}
+.note-title { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+.note-text { font-size: 0.85rem; color: var(--text2); line-height: 1.5; margin-bottom: 12px; white-space: pre-wrap; }
+.note-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 10px; }
+.note-date { font-size: 0.72rem; color: var(--text3); }
+.note-actions { display: flex; gap: 6px; }
+
+/* ========== CLIENTS ========== */
+.clients-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.client-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px; transition: border-color 0.2s;
+}
+.client-card:hover { border-color: var(--border2); }
+.client-avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--cyan));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 1rem; margin-bottom: 12px;
+}
+.client-name { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.client-info { font-size: 0.8rem; color: var(--text2); margin-bottom: 2px; }
+.client-project { font-size: 0.78rem; color: var(--text3); margin-top: 8px; }
+
+/* ========== ANALYTICS ========== */
+.charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; margin-top: 20px; }
+.chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.chart-card-title { font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; margin-bottom: 14px; color: var(--text); }
+canvas { max-width: 100%; }
+.progress-donut-wrapper { display: flex; flex-direction: column; align-items: center; }
+.progress-legend { margin-top: 14px; width: 100%; }
+.legend-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 0.82rem; color: var(--text2); }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* ========== SETTINGS ========== */
+.settings-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  min-height: 500px;
+}
+.settings-sidebar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px;
+  height: fit-content;
+}
+.settings-nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: var(--radius-sm);
+  cursor: pointer; color: var(--text2);
+  font-size: 0.85rem; font-weight: 500;
+  transition: all 0.15s; border: none; background: none;
+  width: 100%; text-align: left;
+}
+.settings-nav-item:hover { background: var(--surface2); color: var(--text); }
+.settings-nav-item.active { background: var(--accent-glow); color: var(--accent); font-weight: 600; }
+.settings-nav-item svg { flex-shrink: 0; opacity: 0.7; }
+.settings-nav-item.active svg { opacity: 1; }
+.settings-panel { display: none; }
+.settings-panel.active { display: block; }
+.settings-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px; margin-bottom: 16px;
+}
+.settings-card-header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+}
+.settings-card-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--accent-glow);
+  display: flex; align-items: center; justify-content: center; color: var(--accent);
+}
+.settings-card-title {
+  font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--text);
+}
+.settings-card-sub { font-size: 0.8rem; color: var(--text3); margin-top: 1px; }
+.toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
+.toggle-row + .toggle-row { border-top: 1px solid var(--border); }
+.toggle-label { font-size: 0.9rem; color: var(--text); font-weight: 500; }
+.toggle-sub { font-size: 0.78rem; color: var(--text3); margin-top: 2px; }
+.toggle {
+  width: 44px; height: 24px; background: var(--border2);
+  border-radius: 12px; cursor: pointer; position: relative;
+  transition: background 0.25s; flex-shrink: 0; border: none;
+}
+.toggle.on { background: var(--accent); }
+.toggle::after {
+  content: ''; width: 18px; height: 18px; border-radius: 50%;
+  background: #fff; position: absolute; top: 3px; left: 3px;
+  transition: transform 0.25s; box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.toggle.on::after { transform: translateX(20px); }
+.option-group { display: flex; gap: 8px; flex-wrap: wrap; }
+.option-btn {
+  padding: 8px 16px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); background: var(--bg2);
+  color: var(--text2); font-family: var(--font-body); font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+}
+.option-btn.selected { border-color: var(--accent); background: var(--accent-glow); color: var(--accent); }
+.option-btn:hover:not(.selected) { border-color: var(--border2); color: var(--text); }
+.divider { height: 1px; background: var(--border); margin: 4px 0; }
+.settings-data-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.danger-zone { border-color: var(--danger); }
+.danger-zone .settings-card-icon { background: var(--danger-dim); color: var(--danger); }
+
+/* ========== CONFIRM ========== */
+.confirm-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px); z-index: 600;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.confirm-overlay.open { opacity: 1; pointer-events: all; }
+.confirm-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px; width: 360px; max-width: 95vw;
+  box-shadow: var(--shadow-lg); transform: scale(0.95); transition: transform 0.2s;
+}
+.confirm-overlay.open .confirm-box { transform: scale(1); }
+.confirm-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+.confirm-text { color: var(--text2); font-size: 0.88rem; margin-bottom: 20px; line-height: 1.5; }
+.confirm-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+/* ========== BURGER ========== */
+.burger-btn {
+  display: none;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 8px; cursor: pointer; color: var(--text);
+}
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); z-index: 99;
+}
+
+/* ========== EMPTY STATE ========== */
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text3); }
+.empty-state-title { font-family: var(--font-display); font-size: 1rem; font-weight: 600; margin-bottom: 8px; color: var(--text2); }
+.empty-state-sub { font-size: 0.85rem; }
+
+/* ========== TOAST ========== */
+#toast-el {
+  position: fixed; bottom: 28px; right: 28px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); padding: 12px 18px;
+  border-radius: var(--radius-sm); z-index: 9999;
+  font-size: 0.85rem; font-weight: 500;
+  box-shadow: var(--shadow); transition: opacity 0.3s;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 900px) {
+  #sidebar { transform: translateX(-100%); }
+  #sidebar.open { transform: translateX(0); box-shadow: var(--shadow-lg); }
+  .sidebar-overlay { display: block; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .sidebar-overlay.open { opacity: 1; pointer-events: all; }
+  #main { margin-left: 0; }
+  .burger-btn { display: flex; }
+  .calendar-wrapper { grid-template-columns: 1fr; }
+  .settings-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .content-area { padding: 16px; }
+  .page-header { padding: 16px; }
+  .form-row { grid-template-columns: 1fr; }
+  .form-row-3 { grid-template-columns: 1fr; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .notes-grid { grid-template-columns: 1fr; }
+  .clients-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .charts-grid { grid-template-columns: 1fr; }
+  .modal { border-radius: var(--radius); }
+}
+</style>
 </head>
 <body>
-    <h1>Hello World</h1>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-brand">My<span>Projects</span></div>
+    <div class="login-sub">Sign in to your workspace</div>
+    <div class="login-error" id="login-error">Incorrect credentials. Please try again.</div>
+    <div class="form-group">
+      <label class="form-label">First Name</label>
+      <input class="form-input" id="login-fname" type="text" placeholder="John" autocomplete="given-name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Last Name</label>
+      <input class="form-input" id="login-lname" type="text" placeholder="Smith" autocomplete="family-name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn btn-primary btn-full btn-lg" onclick="doLogin()">Sign In</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">My<span>Projects</span></div>
+      <div class="sidebar-user-name" id="sidebar-user"></div>
+      <div class="sidebar-clock" id="sidebar-clock">00:00:00</div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="navigate('projects')" data-section="projects">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1" stroke-width="1.8"/></svg>
+        <span data-i18n="nav_projects">Projects</span>
+      </button>
+      <button class="nav-item" onclick="navigate('progress')" data-section="progress">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 17l4-8 4 4 4-6 4 4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 21h18" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span data-i18n="nav_progress">Progress</span>
+      </button>
+      <button class="nav-item" onclick="navigate('analytics')" data-section="analytics">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span data-i18n="nav_analytics">Analytics</span>
+      </button>
+      <button class="nav-item" onclick="navigate('calendar')" data-section="calendar">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke-width="1.8"/><path d="M16 2v4M8 2v4M3 10h18" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span data-i18n="nav_calendar">Calendar</span>
+      </button>
+      <button class="nav-item" onclick="navigate('clients')" data-section="clients">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="9" cy="7" r="3" stroke-width="1.8"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" stroke-width="1.8" stroke-linecap="round"/><path d="M16 3.13a4 4 0 010 7.75M21 21v-2a4 4 0 00-3-3.87" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span data-i18n="nav_clients">Clients</span>
+      </button>
+      <button class="nav-item" onclick="navigate('tasks')" data-section="tasks">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M7 4H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2h-2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span data-i18n="nav_tasks">Tasks</span>
+      </button>
+      <button class="nav-item" onclick="navigate('notes')" data-section="notes">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span data-i18n="nav_notes">Notes</span>
+      </button>
+      <button class="nav-item" onclick="navigate('settings')" data-section="settings">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke-width="1.8"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2m-3.22-7.78-1.42 1.42M6.64 17.36l-1.42 1.42M20.78 17.78l-1.42-1.42M6.64 6.64L5.22 5.22" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span data-i18n="nav_settings">Settings</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="doLogout()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span data-i18n="nav_logout">Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <main id="main">
+    <header class="page-header">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <button class="burger-btn" onclick="openSidebar()">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <h1 class="page-title" id="page-title">Projects</h1>
+      </div>
+      <div class="page-actions" id="page-actions"></div>
+    </header>
+
+    <div class="content-area">
+
+      <!-- PROJECTS -->
+      <section class="section active" id="section-projects">
+        <div class="filter-bar">
+          <input type="text" class="search-input" id="proj-search" placeholder="Search projects..." oninput="renderProjects()">
+        </div>
+        <div class="projects-grid" id="projects-grid"></div>
+      </section>
+
+      <!-- PROGRESS -->
+      <section class="section" id="section-progress">
+        <div class="stats-grid" id="progress-stats"></div>
+        <div style="display:grid;grid-template-columns:340px 1fr;gap:24px;" id="progress-main-grid">
+          <div class="chart-card">
+            <div class="chart-card-title" data-i18n="income_share">Income Share</div>
+            <div class="progress-donut-wrapper">
+              <canvas id="donut-chart" width="240" height="240"></canvas>
+              <div class="progress-legend" id="donut-legend"></div>
+            </div>
+          </div>
+          <div>
+            <div class="chart-card" style="margin-bottom:16px;">
+              <div class="chart-card-title" data-i18n="monthly_goal">Monthly Goal</div>
+              <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;">
+                <input type="number" class="form-input" id="goal-input" placeholder="Set goal..." style="width:140px;" onchange="saveGoal()">
+                <span style="font-size:0.82rem;color:var(--text3);" data-i18n="goal_hint">Press Enter or change</span>
+              </div>
+              <div class="progress-bar" style="height:10px;margin-bottom:6px;">
+                <div class="progress-fill" id="goal-bar" style="width:0%"></div>
+              </div>
+              <div style="font-size:0.82rem;color:var(--text3);" id="goal-status"></div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-card-title" data-i18n="projects_income">Projects Income</div>
+              <div id="progress-income-list"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:16px;" id="monthly-summary-card"></div>
+      </section>
+
+      <!-- ANALYTICS -->
+      <section class="section" id="section-analytics">
+        <div class="stats-grid" id="analytics-stats"></div>
+        <div class="charts-grid">
+          <div class="chart-card"><div class="chart-card-title" data-i18n="monthly_income_chart">Monthly Income</div><canvas id="monthly-bar-chart" width="400" height="220"></canvas></div>
+          <div class="chart-card"><div class="chart-card-title" data-i18n="tech_usage">Technology Usage</div><canvas id="tech-bar-chart" width="400" height="220"></canvas></div>
+          <div class="chart-card"><div class="chart-card-title" data-i18n="income_trend">Income Trend</div><canvas id="trend-line-chart" width="400" height="220"></canvas></div>
+          <div class="chart-card"><div class="chart-card-title" data-i18n="project_status_dist">Project Status</div><canvas id="status-pie-chart" width="340" height="220"></canvas></div>
+        </div>
+      </section>
+
+      <!-- CALENDAR -->
+      <section class="section" id="section-calendar">
+        <div class="calendar-wrapper">
+          <div>
+            <div class="cal-header">
+              <button class="btn btn-secondary btn-sm" onclick="calPrev()">&#8592;</button>
+              <div class="cal-title" id="cal-title"></div>
+              <button class="btn btn-secondary btn-sm" onclick="calNext()">&#8594;</button>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
+          </div>
+          <div class="cal-sidebar">
+            <div class="cal-sidebar-title" data-i18n="upcoming_deadlines">Upcoming Deadlines</div>
+            <div id="deadline-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CLIENTS -->
+      <section class="section" id="section-clients">
+        <div class="filter-bar">
+          <input type="text" class="search-input" id="client-search" placeholder="Search clients..." oninput="renderClients()">
+          <select class="filter-select" id="client-filter-pay" onchange="renderClients()">
+            <option value="">All Payment</option>
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+            <option value="partial">Partial</option>
+          </select>
+        </div>
+        <div style="margin-bottom:16px;" id="clients-total-card"></div>
+        <div class="clients-grid" id="clients-grid"></div>
+      </section>
+
+      <!-- TASKS -->
+      <section class="section" id="section-tasks">
+        <div class="filter-bar">
+          <select class="filter-select" id="task-filter-proj" onchange="renderTasks()"><option value="">All Projects</option></select>
+          <select class="filter-select" id="task-filter-status" onchange="renderTasks()">
+            <option value="">All Status</option>
+            <option value="done">Done</option>
+            <option value="pending">Pending</option>
+            <option value="overdue">Overdue</option>
+          </select>
+          <select class="filter-select" id="task-filter-priority" onchange="renderTasks()">
+            <option value="">All Priority</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+          <select class="filter-select" id="task-sort" onchange="renderTasks()">
+            <option value="deadline">By Deadline</option>
+            <option value="priority">By Priority</option>
+          </select>
+        </div>
+        <div id="tasks-by-project"></div>
+      </section>
+
+      <!-- NOTES -->
+      <section class="section" id="section-notes">
+        <div class="filter-bar">
+          <input type="text" class="search-input" id="notes-search" placeholder="Search notes..." oninput="renderNotes()">
+        </div>
+        <div class="notes-grid" id="notes-grid"></div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="section" id="section-settings">
+        <div class="settings-layout">
+          <div class="settings-sidebar">
+            <button class="settings-nav-item active" onclick="switchSettingsTab('profile',this)">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke-width="1.8"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Profile
+            </button>
+            <button class="settings-nav-item" onclick="switchSettingsTab('appearance',this)">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" stroke-width="1.8"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2m-3.22-7.78-1.42 1.42M6.64 17.36l-1.42 1.42M20.78 17.78l-1.42-1.42M6.64 6.64L5.22 5.22" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Appearance
+            </button>
+            <button class="settings-nav-item" onclick="switchSettingsTab('data',this)">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3" stroke-width="1.8"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12M21 19c0 1.66-4.03 3-9 3S3 20.66 3 19" stroke-width="1.8"/><path d="M3 5v14M21 5v14" stroke-width="1.8"/></svg>
+              Data
+            </button>
+          </div>
+          <div>
+            <div class="settings-panel active" id="sp-profile">
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon"><svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke-width="1.8"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+                  <div><div class="settings-card-title">Profile</div><div class="settings-card-sub">Update your name and credentials</div></div>
+                </div>
+                <div class="form-row" style="margin-bottom:14px;">
+                  <div class="form-group"><label class="form-label" data-i18n="first_name">First Name</label><input class="form-input" id="s-fname" type="text"></div>
+                  <div class="form-group"><label class="form-label" data-i18n="last_name">Last Name</label><input class="form-input" id="s-lname" type="text"></div>
+                </div>
+                <div class="form-group" style="margin-bottom:20px;">
+                  <label class="form-label" data-i18n="new_password">New Password</label>
+                  <input class="form-input" id="s-pass" type="password" placeholder="Leave blank to keep current">
+                </div>
+                <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+              </div>
+            </div>
+            <div class="settings-panel" id="sp-appearance">
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon"><svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z" stroke-width="1.8"/><path d="M12 2v20M2 12h20" stroke-width="1.8"/></svg></div>
+                  <div><div class="settings-card-title">Theme & Display</div><div class="settings-card-sub">Customize the look and feel</div></div>
+                </div>
+                <div class="toggle-row">
+                  <div><div class="toggle-label">Dark Mode</div><div class="toggle-sub">Switch between dark and light theme</div></div>
+                  <button class="toggle" id="theme-toggle" onclick="toggleTheme()"></button>
+                </div>
+                <div class="divider"></div>
+                <div style="padding:12px 0;">
+                  <div class="form-label" style="margin-bottom:10px;">Font Size</div>
+                  <div class="option-group">
+                    <button class="option-btn" onclick="setFontSize('small')" data-size="small">Small</button>
+                    <button class="option-btn" onclick="setFontSize('medium')" data-size="medium">Medium</button>
+                    <button class="option-btn" onclick="setFontSize('large')" data-size="large">Large</button>
+                  </div>
+                </div>
+              </div>
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon"><svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="1.8"/><path d="M12 8v4l3 3" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+                  <div><div class="settings-card-title">Localization</div><div class="settings-card-sub">Language and currency settings</div></div>
+                </div>
+                <div style="margin-bottom:16px;">
+                  <div class="form-label" style="margin-bottom:10px;">Language</div>
+                  <div class="option-group">
+                    <button class="option-btn" onclick="setLang('en')" data-lang="en">🇺🇸 EN</button>
+                    <button class="option-btn" onclick="setLang('uz')" data-lang="uz">🇺🇿 UZ</button>
+                    <button class="option-btn" onclick="setLang('ru')" data-lang="ru">🇷🇺 RU</button>
+                  </div>
+                </div>
+                <div>
+                  <div class="form-label" style="margin-bottom:10px;">Currency</div>
+                  <div class="option-group">
+                    <button class="option-btn" onclick="setCurrency('USD')" data-currency="USD">$ USD</button>
+                    <button class="option-btn" onclick="setCurrency('EUR')" data-currency="EUR">€ EUR</button>
+                    <button class="option-btn" onclick="setCurrency('UZS')" data-currency="UZS">so'm UZS</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="settings-panel" id="sp-data">
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon"><svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div><div class="settings-card-title">Backup & Restore</div><div class="settings-card-sub">Export or import all your data</div></div>
+                </div>
+                <div class="settings-data-actions">
+                  <button class="btn btn-primary" onclick="exportData()">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Export JSON
+                  </button>
+                  <label class="btn btn-secondary" style="cursor:pointer;">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Import JSON
+                    <input type="file" accept=".json" style="display:none" onchange="importData(event)">
+                  </label>
+                </div>
+                <div style="margin-top:16px;padding:14px;background:var(--bg3);border-radius:var(--radius-sm);font-size:0.82rem;color:var(--text3);line-height:1.6;">
+                  📦 Export saves all projects, clients, tasks, notes, calendar events, and settings as a single JSON file.
+                </div>
+              </div>
+              <div class="settings-card danger-zone">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon" style="background:var(--danger-dim);color:var(--danger);"><svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke-width="1.8"/><path d="M12 9v4M12 17h.01" stroke-width="2" stroke-linecap="round"/></svg></div>
+                  <div><div class="settings-card-title">Danger Zone</div><div class="settings-card-sub">Irreversible actions</div></div>
+                </div>
+                <button class="btn btn-danger btn-sm" onclick="clearAllData()">Clear All Data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- PROJECT MODAL -->
+<div class="modal-overlay" id="project-modal-overlay" onclick="closeModalIfBg(event,'project-modal-overlay')">
+  <div class="modal" id="project-modal">
+    <div class="modal-header">
+      <div class="modal-title" id="project-modal-title">New Project</div>
+      <button class="modal-close" onclick="closeProjectModal()">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="p-id">
+      <div class="form-section">
+        <div class="form-section-header">
+          <div class="form-section-icon"><svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1" stroke-width="2"/></svg></div>
+          <div class="form-section-label">Basic Info</div>
+        </div>
+        <div class="form-group"><label class="form-label">Project Name *</label><input class="form-input" id="p-name" type="text" placeholder="My Awesome Project"></div>
+        <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="p-desc" placeholder="Short project description..."></textarea></div>
+        <div class="form-group">
+          <label class="form-label">Technologies</label>
+          <div class="tag-input-wrap" id="tech-tag-wrap" onclick="document.getElementById('tech-input').focus()">
+            <input type="text" class="tag-input" id="tech-input" placeholder="Add tech, press Enter...">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-header">
+          <div class="form-section-icon"><svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/><circle cx="8.5" cy="8.5" r="1.5" stroke-width="2"/><path d="M21 15l-5-5L5 21" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="form-section-label">Cover Image</div>
+        </div>
+        <div class="img-upload-area" id="img-upload-area" onclick="document.getElementById('p-img-file').click()">
+          <input type="file" accept="image/*" id="p-img-file" style="display:none" onchange="handleImgUpload(event)">
+          <div class="img-upload-placeholder" id="img-placeholder">
+            <div class="img-upload-icon"><svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke-width="1.5"/><path d="M21 15l-5-5L5 21" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="img-upload-text">Click to upload image</div>
+            <div class="img-upload-sub">PNG, JPG, WebP — any size</div>
+          </div>
+          <img id="img-preview" class="img-preview" style="display:none" alt="preview">
+          <button class="img-clear-btn" id="img-clear-btn" style="display:none" onclick="clearImg(event)">✕ Remove</button>
+        </div>
+        <input type="hidden" id="p-img-data">
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-header">
+          <div class="form-section-icon"><svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23" stroke-width="2" stroke-linecap="round"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="form-section-label">Financials & Status</div>
+        </div>
+        <div class="form-row" style="margin-bottom:14px;">
+          <div class="form-group"><label class="form-label">Total Price</label><input class="form-input" id="p-price" type="number" placeholder="0"></div>
+          <div class="form-group"><label class="form-label">Income Received</label><input class="form-input" id="p-income" type="number" placeholder="0"></div>
+        </div>
+        <div class="form-row" style="margin-bottom:14px;">
+          <div class="form-group">
+            <label class="form-label">Project Status</label>
+            <div class="status-row" id="status-row">
+              <button type="button" class="status-opt sel-active" data-val="active" onclick="selectStatus('active')">Active</button>
+              <button type="button" class="status-opt" data-val="progress" onclick="selectStatus('progress')">In Progress</button>
+              <button type="button" class="status-opt" data-val="archive" onclick="selectStatus('archive')">Archive</button>
+            </div>
+            <input type="hidden" id="p-status" value="active">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Payment</label>
+            <div class="status-row" id="pay-status-row">
+              <button type="button" class="status-opt sel-paid" data-val="paid" onclick="selectPayStatus('paid')">Paid</button>
+              <button type="button" class="status-opt" data-val="pending" onclick="selectPayStatus('pending')">Pending</button>
+            </div>
+            <input type="hidden" id="p-pay-status" value="paid">
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">Deadline</label><input class="form-input" id="p-deadline" type="date"></div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-header">
+          <div class="form-section-icon"><svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="form-section-label">Project Link</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">URL</label>
+          <div class="link-input-group">
+            <div class="link-input-prefix"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <input class="link-input-field" id="p-link" type="url" placeholder="https://your-project.com">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-header">
+          <div class="form-section-icon"><svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5" stroke-width="2" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="form-section-label">Notes</div>
+        </div>
+        <div class="form-group"><textarea class="form-textarea" id="p-notes" placeholder="Additional notes, comments..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeProjectModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProject()">
+        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" stroke-width="2"/><polyline points="17,21 17,13 7,13 7,21" stroke-width="2"/><polyline points="7,3 7,8 15,8" stroke-width="2"/></svg>
+        Save Project
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENT MODAL -->
+<div class="modal-overlay" id="client-modal-overlay" onclick="closeModalIfBg(event,'client-modal-overlay')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="client-modal-title">New Client</div>
+      <button class="modal-close" onclick="closeClientModal()"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-section">
+        <input type="hidden" id="c-id">
+        <div class="form-row" style="margin-bottom:14px;">
+          <div class="form-group"><label class="form-label">Name *</label><input class="form-input" id="c-name" type="text" placeholder="Client name"></div>
+          <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="c-phone" type="tel" placeholder="+998..."></div>
+        </div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="c-email" type="email" placeholder="client@email.com"></div>
+        <div class="form-group"><label class="form-label">Related Project</label><select class="form-select" id="c-project"></select></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Payment Status</label><select class="form-select" id="c-pay-status"><option value="paid">Paid</option><option value="pending">Pending</option><option value="partial">Partial</option></select></div>
+          <div class="form-group"><label class="form-label">Amount Owed</label><input class="form-input" id="c-amount" type="number" placeholder="0"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeClientModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveClient()">Save Client</button>
+    </div>
+  </div>
+</div>
+
+<!-- TASK MODAL -->
+<div class="modal-overlay" id="task-modal-overlay" onclick="closeModalIfBg(event,'task-modal-overlay')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="task-modal-title">New Task</div>
+      <button class="modal-close" onclick="closeTaskModal()"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-section">
+        <input type="hidden" id="t-id">
+        <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="t-title" type="text"></div>
+        <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="t-desc" style="min-height:70px;"></textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Project</label><select class="form-select" id="t-project"></select></div>
+          <div class="form-group"><label class="form-label">Priority</label><select class="form-select" id="t-priority"><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></div>
+        </div>
+        <div class="form-group"><label class="form-label">Deadline</label><input class="form-input" id="t-deadline" type="date"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeTaskModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTask()">Save Task</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTE MODAL -->
+<div class="modal-overlay" id="note-modal-overlay" onclick="closeModalIfBg(event,'note-modal-overlay')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="note-modal-title">New Note</div>
+      <button class="modal-close" onclick="closeNoteModal()"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-section">
+        <input type="hidden" id="n-id">
+        <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="n-title" type="text"></div>
+        <div class="form-group"><label class="form-label">Content</label><textarea class="form-textarea" id="n-text" style="min-height:140px;"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeNoteModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveNote()">Save Note</button>
+    </div>
+  </div>
+</div>
+
+<!-- CALENDAR EVENT MODAL -->
+<div class="modal-overlay" id="cal-modal-overlay" onclick="closeModalIfBg(event,'cal-modal-overlay')">
+  <div class="modal" style="width:440px;">
+    <div class="modal-header">
+      <div class="modal-title" id="cal-modal-title">Add Event</div>
+      <button class="modal-close" onclick="closeCalModal()"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-section">
+        <input type="hidden" id="ce-id">
+        <input type="hidden" id="ce-date">
+        <div class="form-group"><label class="form-label">Event / Note</label><textarea class="form-textarea" id="ce-text" style="min-height:80px;"></textarea></div>
+        <div id="cal-events-list" style="margin-top:14px;"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeCalModal()">Close</button>
+      <button class="btn btn-primary" onclick="saveCalEvent()">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-title" id="confirm-title">Are you sure?</div>
+    <div class="confirm-text" id="confirm-text"></div>
+    <div class="confirm-actions">
+      <button class="btn btn-secondary" onclick="closeConfirm()">Cancel</button>
+      <button class="btn btn-danger" id="confirm-ok">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== DATA ==========
+const LS = {
+  get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set: (k,v) => localStorage.setItem(k, JSON.stringify(v)),
+  del: k => localStorage.removeItem(k)
+};
+const DEFAULT_CREDS = { fname:'John', lname:'Smith', pass:'098246' };
+function getCreds() { return LS.get('mp_creds') || DEFAULT_CREDS; }
+function getSession() { return LS.get('mp_session'); }
+function getProjects() { return LS.get('mp_projects') || []; }
+function getClients() { return LS.get('mp_clients') || []; }
+function getTasks() { return LS.get('mp_tasks') || []; }
+function getNotes() { return LS.get('mp_notes') || []; }
+function getCalEvents() { return LS.get('mp_calevents') || []; }
+function getSettings() { return LS.get('mp_settings') || { theme:'dark', fontSize:'medium', lang:'en', currency:'USD' }; }
+function getGoal() { return LS.get('mp_goal') || 0; }
+
+const CURRENCIES = { USD:'$', EUR:'€', UZS:"so'm " };
+function fmtCur(val) {
+  const s = getSettings();
+  const sym = CURRENCIES[s.currency] || '$';
+  return sym + (parseFloat(val)||0).toLocaleString();
+}
+
+// ========== I18N ==========
+const I18N = {
+  en:{nav_projects:'Projects',nav_progress:'Progress',nav_analytics:'Analytics',nav_calendar:'Calendar',nav_clients:'Clients',nav_tasks:'Tasks',nav_notes:'Notes',nav_settings:'Settings',nav_logout:'Logout',add_project:'Add Project',add_client:'Add Client',add_task:'Add Task',add_note:'Add Note',income_share:'Income Share',monthly_goal:'Monthly Goal',goal_hint:'Press Enter or change',projects_income:'Projects Income',monthly_income_chart:'Monthly Income',tech_usage:'Technology Usage',income_trend:'Income Trend',project_status_dist:'Project Status',upcoming_deadlines:'Upcoming Deadlines',first_name:'First Name',last_name:'Last Name',new_password:'New Password',total_income:'Total Income',best_project:'Top Project',best_month:'Best Month',tasks_done:'Tasks Done',growth_rate:'Growth Rate',completed_this_year:'Completed This Year',total_clients:'Total Clients',total_debt:'Total Debt',avg_income:'Avg Income',active_projects:'Active Projects'},
+  uz:{nav_projects:'Loyihalar',nav_progress:'Daromad',nav_analytics:'Tahlil',nav_calendar:'Taqvim',nav_clients:'Mijozlar',nav_tasks:'Vazifalar',nav_notes:'Eslatmalar',nav_settings:'Sozlamalar',nav_logout:'Chiqish',add_project:"Loyiha qo'shish",add_client:"Mijoz qo'shish",add_task:"Vazifa qo'shish",add_note:"Eslatma qo'shish",income_share:'Daromad ulushi',monthly_goal:'Oylik maqsad',goal_hint:"O'zgartiring",projects_income:'Loyihalar daromadi',monthly_income_chart:'Oylik daromad',tech_usage:'Texnologiyalar',income_trend:'Tendentsiya',project_status_dist:'Holatlar',upcoming_deadlines:'Yaqin muddatlar',first_name:'Ism',last_name:'Familya',new_password:'Yangi parol',total_income:'Jami daromad',best_project:'Eng yaxshi loyiha',best_month:'Eng yaxshi oy',tasks_done:'Bajarilgan',growth_rate:"O'sish",completed_this_year:"Bu yilda",total_clients:'Jami mijozlar',total_debt:'Jami qarz',avg_income:"O'rtacha daromad",active_projects:'Aktiv loyihalar'},
+  ru:{nav_projects:'Проекты',nav_progress:'Доходы',nav_analytics:'Аналитика',nav_calendar:'Календарь',nav_clients:'Клиенты',nav_tasks:'Задачи',nav_notes:'Заметки',nav_settings:'Настройки',nav_logout:'Выйти',add_project:'Добавить проект',add_client:'Добавить клиента',add_task:'Добавить задачу',add_note:'Добавить заметку',income_share:'Доля дохода',monthly_goal:'Месячная цель',goal_hint:'Нажмите Enter',projects_income:'Доходы проектов',monthly_income_chart:'Ежемесячный доход',tech_usage:'Технологии',income_trend:'Тенденция',project_status_dist:'Статус',upcoming_deadlines:'Ближайшие дедлайны',first_name:'Имя',last_name:'Фамилия',new_password:'Новый пароль',total_income:'Общий доход',best_project:'Лучший проект',best_month:'Лучший месяц',tasks_done:'Выполнено задач',growth_rate:'Рост',completed_this_year:'В этом году',total_clients:'Клиентов',total_debt:'Общий долг',avg_income:'Средний доход',active_projects:'Активные'}
+};
+function t(key){ const l=getSettings().lang||'en'; return (I18N[l]&&I18N[l][key])||I18N.en[key]||key; }
+function applyI18n(){ document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent=t(el.getAttribute('data-i18n')); }); }
+
+// ========== AUTH ==========
+function doLogin() {
+  const fn=document.getElementById('login-fname').value.trim();
+  const ln=document.getElementById('login-lname').value.trim();
+  const pw=document.getElementById('login-pass').value;
+  const creds=getCreds();
+  if(fn===creds.fname&&ln===creds.lname&&pw===creds.pass){
+    LS.set('mp_session',{fname:fn,lname:ln});
+    document.getElementById('login-error').classList.remove('show');
+    startApp();
+  } else {
+    document.getElementById('login-error').classList.add('show');
+    document.getElementById('login-pass').value='';
+  }
+}
+document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('login-fname').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-lname').focus();});
+document.getElementById('login-lname').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-pass').focus();});
+
+function doLogout(){
+  LS.del('mp_session');
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('login-screen').classList.remove('hidden');
+  ['login-fname','login-lname','login-pass'].forEach(id=>document.getElementById(id).value='');
+}
+
+function startApp(){
+  document.getElementById('login-screen').classList.add('hidden');
+  const app=document.getElementById('app');
+  app.style.display='flex';
+  setTimeout(()=>{
+    app.classList.add('visible');
+    const s=getSession();
+    document.getElementById('sidebar-user').textContent=s?s.fname+' '+s.lname:'';
+    applySettings(); applyI18n(); navigate('projects'); startClock();
+  },30);
+}
+
+function startClock(){
+  function tick(){
+    const n=new Date(),pad=x=>String(x).padStart(2,'0');
+    document.getElementById('sidebar-clock').textContent=pad(n.getHours())+':'+pad(n.getMinutes())+':'+pad(n.getSeconds());
+  }
+  tick(); setInterval(tick,1000);
+}
+
+// ========== NAVIGATION ==========
+let currentSection='projects';
+function navigate(sec){
+  currentSection=sec;
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.getAttribute('data-section')===sec));
+  document.querySelectorAll('.section').forEach(el=>el.classList.toggle('active',el.id==='section-'+sec));
+  const titles={projects:t('nav_projects'),progress:t('nav_progress'),analytics:t('nav_analytics'),calendar:t('nav_calendar'),clients:t('nav_clients'),tasks:t('nav_tasks'),notes:t('nav_notes'),settings:t('nav_settings')};
+  document.getElementById('page-title').textContent=titles[sec]||sec;
+  updatePageActions(sec);
+  if(sec==='projects') renderProjects();
+  if(sec==='progress') renderProgress();
+  if(sec==='analytics') renderAnalytics();
+  if(sec==='calendar') renderCalendar();
+  if(sec==='clients') renderClients();
+  if(sec==='tasks') renderTasks();
+  if(sec==='notes') renderNotes();
+  if(sec==='settings') renderSettings();
+  closeAllCardMenus();
+  closeSidebar();
+}
+
+function updatePageActions(sec){
+  const pa=document.getElementById('page-actions');
+  const actions={
+    projects:`<button class="btn btn-primary btn-sm" onclick="openProjectModal()"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-width="2.5" stroke-linecap="round"/></svg>${t('add_project')}</button>`,
+    clients:`<button class="btn btn-primary btn-sm" onclick="openClientModal()"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-width="2.5" stroke-linecap="round"/></svg>${t('add_client')}</button>`,
+    tasks:`<button class="btn btn-primary btn-sm" onclick="openTaskModal()"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-width="2.5" stroke-linecap="round"/></svg>${t('add_task')}</button>`,
+    notes:`<button class="btn btn-primary btn-sm" onclick="openNoteModal()"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-width="2.5" stroke-linecap="round"/></svg>${t('add_note')}</button>`,
+  };
+  pa.innerHTML=actions[sec]||'';
+}
+
+function openSidebar(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebar-overlay').classList.add('open'); }
+function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-overlay').classList.remove('open'); }
+
+// ========== SETTINGS ==========
+function applySettings(){
+  const s=getSettings();
+  document.documentElement.setAttribute('data-theme',s.theme||'dark');
+  document.documentElement.setAttribute('data-font-size',s.fontSize||'medium');
+}
+function toggleTheme(){ const s=getSettings(); s.theme=s.theme==='dark'?'light':'dark'; LS.set('mp_settings',s); applySettings(); renderSettings(); }
+function setFontSize(size){ const s=getSettings(); s.fontSize=size; LS.set('mp_settings',s); applySettings(); renderSettings(); }
+function setLang(lang){ const s=getSettings(); s.lang=lang; LS.set('mp_settings',s); applyI18n(); navigate(currentSection); renderSettings(); }
+function setCurrency(cur){ const s=getSettings(); s.currency=cur; LS.set('mp_settings',s); renderSettings(); if(currentSection!=='settings') navigate(currentSection); }
+
+function switchSettingsTab(tab, el){
+  document.querySelectorAll('.settings-nav-item').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.settings-panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('sp-'+tab).classList.add('active');
+}
+
+function renderSettings(){
+  const s=getSettings();
+  const tt=document.getElementById('theme-toggle'); if(tt) tt.classList.toggle('on',s.theme==='dark');
+  document.querySelectorAll('[data-size]').forEach(el=>el.classList.toggle('selected',el.getAttribute('data-size')===s.fontSize));
+  document.querySelectorAll('[data-lang]').forEach(el=>el.classList.toggle('selected',el.getAttribute('data-lang')===s.lang));
+  document.querySelectorAll('[data-currency]').forEach(el=>el.classList.toggle('selected',el.getAttribute('data-currency')===s.currency));
+  const sn=getSession();
+  if(sn){ document.getElementById('s-fname').value=sn.fname||''; document.getElementById('s-lname').value=sn.lname||''; }
+  applyI18n();
+}
+
+function saveProfile(){
+  const fn=document.getElementById('s-fname').value.trim();
+  const ln=document.getElementById('s-lname').value.trim();
+  const pw=document.getElementById('s-pass').value;
+  if(!fn||!ln){alert('Name required');return;}
+  const creds=getCreds(); creds.fname=fn; creds.lname=ln;
+  if(pw) creds.pass=pw;
+  LS.set('mp_creds',creds); LS.set('mp_session',{fname:fn,lname:ln});
+  document.getElementById('sidebar-user').textContent=fn+' '+ln;
+  document.getElementById('s-pass').value='';
+  showToast('✓ Profile saved');
+}
+
+function exportData(){
+  const data={projects:getProjects(),clients:getClients(),tasks:getTasks(),notes:getNotes(),calevents:getCalEvents(),settings:getSettings(),creds:getCreds(),goal:getGoal()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='myprojects-backup.json'; a.click();
+  URL.revokeObjectURL(url);
+}
+function importData(e){
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(data.projects) LS.set('mp_projects',data.projects);
+      if(data.clients) LS.set('mp_clients',data.clients);
+      if(data.tasks) LS.set('mp_tasks',data.tasks);
+      if(data.notes) LS.set('mp_notes',data.notes);
+      if(data.calevents) LS.set('mp_calevents',data.calevents);
+      if(data.settings) LS.set('mp_settings',data.settings);
+      if(data.creds) LS.set('mp_creds',data.creds);
+      if(data.goal) LS.set('mp_goal',data.goal);
+      applySettings(); applyI18n(); navigate(currentSection); showToast('✓ Data imported');
+    }catch{alert('Invalid JSON file');}
+  };
+  reader.readAsText(file); e.target.value='';
+}
+function clearAllData(){
+  confirm2('Clear All Data','This will permanently delete all your projects, clients, tasks, and notes.',()=>{
+    ['mp_projects','mp_clients','mp_tasks','mp_notes','mp_calevents','mp_goal'].forEach(k=>LS.del(k));
+    navigate(currentSection); showToast('All data cleared');
+  });
+}
+
+// ========== TOAST ==========
+function showToast(msg){
+  let el=document.getElementById('toast-el');
+  if(!el){el=document.createElement('div');el.id='toast-el';document.body.appendChild(el);}
+  el.textContent=msg; el.style.opacity='1';
+  clearTimeout(el._t); el._t=setTimeout(()=>el.style.opacity='0',2500);
+}
+
+// ========== MODALS ==========
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function closeModalIfBg(e,id){if(e.target===document.getElementById(id))closeModal(id);}
+
+// ========== IMAGE UPLOAD ==========
+let currentImgData='';
+function handleImgUpload(event){
+  const file=event.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const data=e.target.result;
+    currentImgData=data;
+    document.getElementById('p-img-data').value=data;
+    document.getElementById('img-preview').src=data;
+    document.getElementById('img-preview').style.display='block';
+    document.getElementById('img-placeholder').style.display='none';
+    document.getElementById('img-clear-btn').style.display='block';
+    document.getElementById('img-upload-area').classList.add('has-preview');
+  };
+  reader.readAsDataURL(file);
+}
+function clearImg(e){
+  e.stopPropagation();
+  currentImgData='';
+  document.getElementById('p-img-data').value='';
+  document.getElementById('p-img-file').value='';
+  document.getElementById('img-preview').style.display='none';
+  document.getElementById('img-preview').src='';
+  document.getElementById('img-placeholder').style.display='block';
+  document.getElementById('img-clear-btn').style.display='none';
+  document.getElementById('img-upload-area').classList.remove('has-preview');
+}
+function initImgUpload(existingData){
+  currentImgData=existingData||'';
+  document.getElementById('p-img-data').value=existingData||'';
+  document.getElementById('p-img-file').value='';
+  if(existingData){
+    document.getElementById('img-preview').src=existingData;
+    document.getElementById('img-preview').style.display='block';
+    document.getElementById('img-placeholder').style.display='none';
+    document.getElementById('img-clear-btn').style.display='block';
+    document.getElementById('img-upload-area').classList.add('has-preview');
+  } else {
+    document.getElementById('img-preview').style.display='none';
+    document.getElementById('img-preview').src='';
+    document.getElementById('img-placeholder').style.display='block';
+    document.getElementById('img-clear-btn').style.display='none';
+    document.getElementById('img-upload-area').classList.remove('has-preview');
+  }
+}
+
+// ========== STATUS SELECT ==========
+function selectStatus(val){
+  document.getElementById('p-status').value=val;
+  document.querySelectorAll('#status-row .status-opt').forEach(b=>{
+    b.className='status-opt';
+    if(b.getAttribute('data-val')===val){
+      b.classList.add(val==='active'?'sel-active':val==='progress'?'sel-progress':'sel-archive');
+    }
+  });
+}
+function selectPayStatus(val){
+  document.getElementById('p-pay-status').value=val;
+  document.querySelectorAll('#pay-status-row .status-opt').forEach(b=>{
+    b.className='status-opt';
+    if(b.getAttribute('data-val')===val) b.classList.add(val==='paid'?'sel-paid':'sel-pending');
+  });
+}
+
+// ========== TECH TAGS ==========
+let techTags=[];
+function initTagInput(existing){
+  techTags=existing?[...existing]:[];
+  renderTagWrap();
+}
+function renderTagWrap(){
+  const wrap=document.getElementById('tech-tag-wrap');
+  const chips=techTags.map((tag,i)=>`<span class="tag-chip">${esc(tag)}<button type="button" class="tag-chip-remove" onclick="removeTag(${i})">×</button></span>`).join('');
+  wrap.innerHTML=chips+`<input type="text" class="tag-input" id="tech-input" placeholder="${techTags.length?'Add more...':'Add tech, press Enter...'}">`;
+  const input=document.getElementById('tech-input');
+  input.onkeydown=e=>{
+    if((e.key==='Enter'||e.key===',')&&input.value.trim()){e.preventDefault();techTags.push(input.value.trim());input.value='';renderTagWrap();document.getElementById('tech-input').focus();}
+    if(e.key==='Backspace'&&!input.value&&techTags.length){techTags.pop();renderTagWrap();}
+  };
+}
+function removeTag(i){techTags.splice(i,1);renderTagWrap();}
+
+// ========== CARD MENU ==========
+function closeAllCardMenus(){
+  document.querySelectorAll('.card-dropdown.open').forEach(d=>d.classList.remove('open'));
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.card-menu-btn')&&!e.target.closest('.card-dropdown')){
+    closeAllCardMenus();
+  }
+});
+function toggleCardMenu(e,id){
+  e.stopPropagation();
+  const menu=document.getElementById('menu-'+id);
+  const wasOpen=menu.classList.contains('open');
+  closeAllCardMenus();
+  if(!wasOpen) menu.classList.add('open');
+}
+
+// ========== PROJECTS ==========
+function openProjectModal(id){
+  initTagInput();
+  if(id){
+    const p=getProjects().find(x=>x.id===id); if(!p) return;
+    document.getElementById('project-modal-title').textContent='Edit Project';
+    document.getElementById('p-id').value=p.id;
+    document.getElementById('p-name').value=p.name||'';
+    document.getElementById('p-desc').value=p.desc||'';
+    document.getElementById('p-price').value=p.price||'';
+    document.getElementById('p-income').value=p.income||'';
+    document.getElementById('p-deadline').value=p.deadline||'';
+    document.getElementById('p-notes').value=p.notes||'';
+    document.getElementById('p-link').value=p.link||'';
+    selectStatus(p.status||'active');
+    selectPayStatus(p.payStatus||'pending');
+    initTagInput(p.tech);
+    initImgUpload(p.img||'');
+  } else {
+    document.getElementById('project-modal-title').textContent='New Project';
+    document.getElementById('p-id').value='';
+    ['p-name','p-desc','p-price','p-income','p-deadline','p-notes','p-link'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
+    selectStatus('active'); selectPayStatus('pending');
+    initTagInput([]); initImgUpload('');
+  }
+  openModal('project-modal-overlay');
+}
+function closeProjectModal(){closeModal('project-modal-overlay');}
+
+function saveProject(){
+  const name=document.getElementById('p-name').value.trim();
+  if(!name){alert('Project name required');return;}
+  const id=document.getElementById('p-id').value||uid();
+  const projects=getProjects();
+  const idx=projects.findIndex(x=>x.id===id);
+  const p={
+    id,name,
+    desc:document.getElementById('p-desc').value.trim(),
+    img:document.getElementById('p-img-data').value||'',
+    price:parseFloat(document.getElementById('p-price').value)||0,
+    income:parseFloat(document.getElementById('p-income').value)||0,
+    status:document.getElementById('p-status').value,
+    payStatus:document.getElementById('p-pay-status').value,
+    tech:[...techTags],
+    deadline:document.getElementById('p-deadline').value,
+    notes:document.getElementById('p-notes').value.trim(),
+    link:document.getElementById('p-link').value.trim(),
+    createdAt:idx>=0?projects[idx].createdAt:new Date().toISOString().split('T')[0],
+  };
+  if(idx>=0) projects[idx]=p; else projects.unshift(p);
+  LS.set('mp_projects',projects);
+  closeProjectModal(); renderProjects(); showToast('✓ Project saved');
+}
+
+function deleteProject(id){
+  confirm2('Delete Project','This action cannot be undone.',()=>{
+    LS.set('mp_projects',getProjects().filter(x=>x.id!==id));
+    renderProjects(); showToast('Project deleted');
+  });
+}
+
+function archiveProject(id){
+  const projects=getProjects();
+  const p=projects.find(x=>x.id===id); if(!p) return;
+  p.status=p.status==='archive'?'active':'archive';
+  LS.set('mp_projects',projects); renderProjects();
+}
+
+function renderProjects(){
+  const q=(document.getElementById('proj-search')?.value||'').toLowerCase();
+  let projects=getProjects();
+  if(q) projects=projects.filter(p=>p.name.toLowerCase().includes(q)||(p.desc||'').toLowerCase().includes(q)||(p.tech||[]).join(' ').toLowerCase().includes(q));
+  const grid=document.getElementById('projects-grid');
+  if(!projects.length){
+    grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-title">No projects yet</div><div class="empty-state-sub">Add your first project to get started.</div></div>`;
+    return;
+  }
+  grid.innerHTML=projects.map(p=>projectCard(p)).join('');
+}
+
+// ===== TUZATILGAN projectCard funksiyasi =====
+function projectCard(p){
+  const statusMap={active:'status-active',archive:'status-archive',progress:'status-progress'};
+  const statusLabel={active:'Active',archive:'Archive',progress:'In Progress'};
+
+  // Rasm qismi — asosiy tuzatish shu yerda
+  let imgWrapContent='';
+  if(p.img){
+    // img mavjud: avval img, keyin placeholder (img error bo'lsa ko'rinadi)
+    imgWrapContent=`
+      <img class="project-img" src="${esc(p.img)}" alt="${esc(p.name)}"
+        onload="this.closest('.project-img-wrap').classList.add('loaded')"
+        onerror="this.closest('.project-img-wrap').classList.remove('loaded')">
+      <div class="project-img-placeholder">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="18" height="18" rx="2" stroke-width="1.5"/>
+          <circle cx="8.5" cy="8.5" r="1.5" stroke-width="1.5"/>
+          <path d="M21 15l-5-5L5 21" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        No image
+      </div>`;
+  } else {
+    // img yo'q: faqat placeholder
+    imgWrapContent=`
+      <div class="project-img-placeholder">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="18" height="18" rx="2" stroke-width="1.5"/>
+          <circle cx="8.5" cy="8.5" r="1.5" stroke-width="1.5"/>
+          <path d="M21 15l-5-5L5 21" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        No image
+      </div>`;
+  }
+
+  const tags=(p.tech||[]).map(tag=>`<span class="tech-tag">${esc(tag)}</span>`).join('');
+  const payBadge=p.payStatus==='paid'
+    ?`<span class="pay-status pay-paid">Paid</span>`
+    :`<span class="pay-status pay-pending">Pending</span>`;
+  const note=p.notes?`<div class="project-note">${esc(p.notes)}</div>`:'';
+  const linkBtn=p.link?`<a class="project-link" href="${esc(p.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+    <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-width="2.2" stroke-linecap="round"/>
+    </svg>Link</a>`:'';
+
+  return `<div class="project-card">
+    <div class="project-img-wrap${p.img?' loaded':''}">
+      ${imgWrapContent}
+      <button class="card-menu-btn" onclick="toggleCardMenu(event,'${p.id}')" title="Actions">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+          <circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/>
+        </svg>
+      </button>
+      <div class="card-dropdown" id="menu-${p.id}">
+        <button class="card-dropdown-item" onclick="closeAllCardMenus();openProjectModal('${p.id}')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Edit
+        </button>
+        <button class="card-dropdown-item" onclick="closeAllCardMenus();archiveProject('${p.id}')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="21,8 21,21 3,21 3,8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="3" width="22" height="5" rx="1" stroke-width="1.8"/><line x1="10" y1="12" x2="14" y2="12" stroke-width="1.8" stroke-linecap="round"/></svg>
+          ${p.status==='archive'?'Unarchive':'Archive'}
+        </button>
+        <button class="card-dropdown-item" onclick="closeAllCardMenus();downloadProjectPDF('${p.id}')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke-width="1.8"/><polyline points="14,2 14,8 20,8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Export PDF
+        </button>
+        <div class="card-dropdown-divider"></div>
+        <button class="card-dropdown-item danger" onclick="closeAllCardMenus();deleteProject('${p.id}')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3,6 5,6 21,6" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 6V4h6v2" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Delete
+        </button>
+      </div>
+    </div>
+    <div class="project-body">
+      <div class="project-header-row">
+        <div class="project-name">${esc(p.name)}</div>
+        <span class="status-badge ${statusMap[p.status]||'status-active'}">${statusLabel[p.status]||p.status}</span>
+      </div>
+      ${p.desc?`<div class="project-desc">${esc(p.desc)}</div>`:''}
+      ${tags?`<div class="tech-tags">${tags}</div>`:''}
+      ${linkBtn?`<div class="project-links">${linkBtn}</div>`:''}
+      ${note}
+      <div class="project-meta">
+        <div>
+          <div class="project-price">${fmtCur(p.income)} <span style="font-size:0.72rem;color:var(--text3);font-weight:400;">/ ${fmtCur(p.price)}</span></div>
+          ${payBadge}
+        </div>
+        <div class="project-date">${p.createdAt||''}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function downloadProjectPDF(id){
+  const p=getProjects().find(x=>x.id===id); if(!p) return;
+  const html=`<html><head><title>${p.name}</title><style>body{font-family:sans-serif;max-width:700px;margin:40px auto;color:#1a1d2e;}h1{font-size:1.6rem;margin-bottom:8px;}.meta{color:#666;font-size:0.9rem;margin-bottom:20px;}.section{margin-bottom:16px;}.label{font-weight:700;font-size:0.8rem;text-transform:uppercase;color:#888;margin-bottom:4px;}</style></head><body><h1>${p.name}</h1><div class="meta">Created: ${p.createdAt} | Status: ${p.status}</div>${p.desc?`<div class="section"><div class="label">Description</div><p>${p.desc}</p></div>`:''}<div class="section"><div class="label">Price / Income</div><p>${fmtCur(p.price)} / ${fmtCur(p.income)}</p></div>${p.tech&&p.tech.length?`<div class="section"><div class="label">Technologies</div><p>${p.tech.join(', ')}</p></div>`:''}${p.link?`<div class="section"><div class="label">Link</div><p>${p.link}</p></div>`:''}${p.notes?`<div class="section"><div class="label">Notes</div><p>${p.notes}</p></div>`:''}</body></html>`;
+  const w=window.open('','_blank'); w.document.write(html); w.document.close(); w.print();
+}
+
+// ========== PROGRESS ==========
+function renderProgress(){
+  const projects=getProjects();
+  const total=projects.reduce((s,p)=>s+(p.income||0),0);
+  const pending=projects.filter(p=>p.payStatus==='pending').reduce((s,p)=>s+(p.income||0),0);
+  const now=new Date();
+  const thisMonth=projects.filter(p=>{const d=new Date(p.createdAt||'');return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}).reduce((s,p)=>s+(p.income||0),0);
+  const topP=projects.reduce((a,b)=>(b.income||0)>(a.income||0)?b:a,projects[0]||{});
+  document.getElementById('progress-stats').innerHTML=`
+    <div class="stat-card"><div class="stat-label">${t('total_income')}</div><div class="stat-value stat-success">${fmtCur(total)}</div></div>
+    <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-value stat-warning">${fmtCur(pending)}</div></div>
+    <div class="stat-card"><div class="stat-label">This Month</div><div class="stat-value stat-accent">${fmtCur(thisMonth)}</div></div>
+    <div class="stat-card"><div class="stat-label">${t('best_project')}</div><div class="stat-value" style="font-size:1rem;">${topP.name?esc(topP.name):'N/A'}</div><div class="stat-sub">${fmtCur(topP.income||0)}</div></div>
+  `;
+  const goal=getGoal();
+  document.getElementById('goal-input').value=goal||'';
+  const pct=goal>0?Math.min(100,Math.round(thisMonth/goal*100)):0;
+  document.getElementById('goal-bar').style.width=pct+'%';
+  document.getElementById('goal-bar').className='progress-fill'+(pct>=100?' full':'');
+  document.getElementById('goal-status').textContent=goal>0?`${fmtCur(thisMonth)} of ${fmtCur(goal)} (${pct}%)`:'Set a monthly goal above';
+  const sorted=[...projects].sort((a,b)=>(b.income||0)-(a.income||0));
+  document.getElementById('progress-income-list').innerHTML=sorted.map(p=>{
+    const pct2=total>0?Math.round((p.income||0)/total*100):0;
+    const pay=p.payStatus==='paid'?`<span class="pay-status pay-paid">Paid</span>`:`<span class="pay-status pay-pending">Pending</span>`;
+    return `<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><span style="font-size:0.88rem;font-weight:500;">${esc(p.name)}</span><span style="font-size:0.85rem;color:var(--success);">${fmtCur(p.income||0)} ${pay}</span></div><div class="progress-bar"><div class="progress-fill" style="width:${pct2}%"></div></div><div style="font-size:0.72rem;color:var(--text3);margin-top:2px;">${p.createdAt||''} &bull; ${pct2}%</div></div>`;
+  }).join('');
+  const months={};
+  projects.forEach(p=>{if(!p.createdAt)return;const d=new Date(p.createdAt);const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');months[key]=(months[key]||0)+(p.income||0);});
+  const monthEntries=Object.entries(months).sort((a,b)=>a[0].localeCompare(b[0]));
+  document.getElementById('monthly-summary-card').innerHTML=monthEntries.length?`<div class="chart-card"><div class="chart-card-title">Monthly Income Summary</div>${monthEntries.map(([m,v])=>`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.88rem;"><span style="color:var(--text2);">${m}</span><span style="color:var(--success);font-weight:600;">${fmtCur(v)}</span></div>`).join('')}</div>`:'';
+  drawDonut(sorted.slice(0,6));
+}
+document.getElementById('goal-input').addEventListener('keydown',e=>{if(e.key==='Enter')saveGoal();});
+function saveGoal(){const v=parseFloat(document.getElementById('goal-input').value)||0;LS.set('mp_goal',v);renderProgress();}
+
+function drawDonut(projects){
+  const canvas=document.getElementById('donut-chart'); if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=240,H=240,cx=W/2,cy=H/2,R=90,r=54;
+  ctx.clearRect(0,0,W,H);
+  const colors=['#4f7cff','#00d4ff','#2dd4a0','#ffad4f','#ff4f6a','#a78bfa'];
+  const total=projects.reduce((s,p)=>s+(p.income||0),0);
+  if(!total){ctx.fillStyle='var(--text3)';ctx.textAlign='center';ctx.font='14px Instrument Sans';ctx.fillText('No data',cx,cy);return;}
+  let angle=-Math.PI/2;
+  const legend=document.getElementById('donut-legend');legend.innerHTML='';
+  projects.forEach((p,i)=>{
+    const slice=((p.income||0)/total)*Math.PI*2;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,R,angle,angle+slice);ctx.closePath();ctx.fillStyle=colors[i%colors.length];ctx.fill();
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--surface').trim()||'#1e2230';ctx.fill();
+    angle+=slice;
+    legend.innerHTML+=`<div class="legend-item"><div class="legend-dot" style="background:${colors[i%colors.length]}"></div>${esc(p.name)} &mdash; ${fmtCur(p.income||0)}</div>`;
+  });
+}
+
+// ========== ANALYTICS ==========
+function renderAnalytics(){
+  const projects=getProjects(),tasks=getTasks(),clients=getClients(),now=new Date();
+  const totalIncome=projects.reduce((s,p)=>s+(p.income||0),0);
+  const activeCount=projects.filter(p=>p.status==='active').length;
+  const archiveCount=projects.filter(p=>p.status==='archive').length;
+  const avg=projects.length?Math.round(totalIncome/projects.length):0;
+  const tasksDone=tasks.filter(t=>t.done).length;
+  const tasksPct=tasks.length?Math.round(tasksDone/tasks.length*100):0;
+  const completedYear=projects.filter(p=>{const d=new Date(p.createdAt||'');return d.getFullYear()===now.getFullYear()&&p.status==='archive';}).length;
+  const months={};
+  projects.forEach(p=>{if(!p.createdAt)return;const d=new Date(p.createdAt);months[d.getMonth()]=(months[d.getMonth()]||0)+(p.income||0);});
+  const monthNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const monthVals=monthNames.map((_,i)=>months[i]||0);
+  const bestMonthIdx=monthVals.indexOf(Math.max(...monthVals));
+  const prevMonth=months[(now.getMonth()-1+12)%12]||0;
+  const thisMonth=months[now.getMonth()]||0;
+  const growth=prevMonth>0?Math.round((thisMonth-prevMonth)/prevMonth*100):0;
+  document.getElementById('analytics-stats').innerHTML=`
+    <div class="stat-card"><div class="stat-label">${t('total_income')}</div><div class="stat-value stat-success">${fmtCur(totalIncome)}</div></div>
+    <div class="stat-card"><div class="stat-label">${t('growth_rate')}</div><div class="stat-value ${growth>=0?'stat-success':'stat-danger'}">${growth>=0?'+':''}${growth}%</div></div>
+    <div class="stat-card"><div class="stat-label">${t('avg_income')}</div><div class="stat-value stat-accent">${fmtCur(avg)}</div></div>
+    <div class="stat-card"><div class="stat-label">${t('best_month')}</div><div class="stat-value" style="font-size:1.1rem;">${monthNames[bestMonthIdx]||'N/A'}</div><div class="stat-sub">${fmtCur(monthVals[bestMonthIdx]||0)}</div></div>
+    <div class="stat-card"><div class="stat-label">${t('tasks_done')}</div><div class="stat-value">${tasksDone}/${tasks.length}</div><div class="stat-sub">${tasksPct}%</div></div>
+    <div class="stat-card"><div class="stat-label">${t('total_clients')}</div><div class="stat-value stat-accent">${clients.length}</div></div>
+    <div class="stat-card"><div class="stat-label">${t('completed_this_year')}</div><div class="stat-value">${completedYear}</div></div>
+    <div class="stat-card"><div class="stat-label">${t('active_projects')} / Archive</div><div class="stat-value">${activeCount}<span style="color:var(--text3);font-size:1rem;"> / ${archiveCount}</span></div></div>
+  `;
+  setTimeout(()=>{
+    drawBarChart('monthly-bar-chart',monthNames,monthVals);
+    drawTechBar();drawTrendLine(monthNames,monthVals);drawStatusPie(projects);
+  },50);
+}
+
+function drawBarChart(canvasId,labels,values){
+  const canvas=document.getElementById(canvasId); if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.offsetWidth||400,H=220;
+  canvas.width=W;canvas.height=H;ctx.clearRect(0,0,W,H);
+  const pad={t:20,r:20,b:40,l:56},maxV=Math.max(...values,1);
+  const barW=(W-pad.l-pad.r)/labels.length;
+  const theme=document.documentElement.getAttribute('data-theme');
+  const textColor=theme==='dark'?'#636b8a':'#8890b0';
+  const gridColor=theme==='dark'?'#2a3048':'#dce0ef';
+  for(let i=0;i<=4;i++){const y=pad.t+(H-pad.t-pad.b)*(1-i/4);ctx.strokeStyle=gridColor;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillStyle=textColor;ctx.font='11px Instrument Sans';ctx.textAlign='right';ctx.fillText(Math.round(maxV*i/4).toLocaleString(),pad.l-5,y+4);}
+  values.forEach((v,i)=>{const bH=((v/maxV)*(H-pad.t-pad.b));const x=pad.l+i*barW+barW*0.15;const y=pad.t+(H-pad.t-pad.b)-bH;const bw=barW*0.7;ctx.fillStyle='#4f7cff';ctx.beginPath();ctx.roundRect?ctx.roundRect(x,y,bw,bH,[4,4,0,0]):ctx.rect(x,y,bw,bH);ctx.fill();ctx.fillStyle=textColor;ctx.font='10px Instrument Sans';ctx.textAlign='center';ctx.fillText(labels[i],x+bw/2,H-pad.b+16);});
+}
+
+function drawTechBar(){
+  const projects=getProjects();const freq={};
+  projects.forEach(p=>(p.tech||[]).forEach(tag=>{freq[tag]=(freq[tag]||0)+1;}));
+  const entries=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const canvas=document.getElementById('tech-bar-chart'); if(!canvas) return;
+  const ctx=canvas.getContext('2d');const W=canvas.offsetWidth||400,H=220;
+  canvas.width=W;canvas.height=H;ctx.clearRect(0,0,W,H);
+  if(!entries.length) return;
+  const pad={t:20,r:20,b:40,l:70},barH=(H-pad.t-pad.b)/entries.length;
+  const maxV=Math.max(...entries.map(e=>e[1]),1);
+  const theme=document.documentElement.getAttribute('data-theme');
+  const textColor=theme==='dark'?'#9aa0b8':'#4a5278';
+  const colors=['#4f7cff','#00d4ff','#2dd4a0','#ffad4f','#ff4f6a','#a78bfa','#38bdf8','#fb923c'];
+  entries.forEach(([tech,count],i)=>{const bW=((count/maxV)*(W-pad.l-pad.r));const y=pad.t+i*barH+barH*0.15;const bh=barH*0.7;ctx.fillStyle=colors[i%colors.length];ctx.beginPath();ctx.roundRect?ctx.roundRect(pad.l,y,bW,bh,[0,4,4,0]):ctx.rect(pad.l,y,bW,bh);ctx.fill();ctx.fillStyle=textColor;ctx.font='11px Instrument Sans';ctx.textAlign='right';ctx.fillText(tech.length>9?tech.slice(0,9)+'.':tech,pad.l-5,y+bh/2+4);ctx.textAlign='left';ctx.fillText(count,pad.l+bW+5,y+bh/2+4);});
+}
+
+function drawTrendLine(labels,values){
+  const canvas=document.getElementById('trend-line-chart'); if(!canvas) return;
+  const ctx=canvas.getContext('2d');const W=canvas.offsetWidth||400,H=220;
+  canvas.width=W;canvas.height=H;ctx.clearRect(0,0,W,H);
+  const pad={t:20,r:20,b:40,l:56},maxV=Math.max(...values,1);
+  const theme=document.documentElement.getAttribute('data-theme');
+  const textColor=theme==='dark'?'#636b8a':'#8890b0';
+  const gridColor=theme==='dark'?'#2a3048':'#dce0ef';
+  const pts=values.map((v,i)=>({x:pad.l+(i/(labels.length-1))*(W-pad.l-pad.r),y:pad.t+(1-v/maxV)*(H-pad.t-pad.b)}));
+  for(let i=0;i<=4;i++){const y=pad.t+(H-pad.t-pad.b)*(1-i/4);ctx.strokeStyle=gridColor;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillStyle=textColor;ctx.font='11px Instrument Sans';ctx.textAlign='right';ctx.fillText(Math.round(maxV*i/4).toLocaleString(),pad.l-5,y+4);}
+  ctx.beginPath();ctx.moveTo(pts[0].x,H-pad.b);pts.forEach(p=>ctx.lineTo(p.x,p.y));ctx.lineTo(pts[pts.length-1].x,H-pad.b);ctx.closePath();
+  const grad=ctx.createLinearGradient(0,pad.t,0,H-pad.b);grad.addColorStop(0,'rgba(79,124,255,0.3)');grad.addColorStop(1,'rgba(79,124,255,0)');ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.strokeStyle='#4f7cff';ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.stroke();
+  labels.forEach((l,i)=>{ctx.fillStyle=textColor;ctx.font='10px Instrument Sans';ctx.textAlign='center';ctx.fillText(l,pts[i].x,H-pad.b+16);});
+  pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,3.5,0,Math.PI*2);ctx.fillStyle='#4f7cff';ctx.fill();});
+}
+
+function drawStatusPie(projects){
+  const canvas=document.getElementById('status-pie-chart'); if(!canvas) return;
+  const ctx=canvas.getContext('2d');const W=canvas.offsetWidth||340,H=220;
+  canvas.width=W;canvas.height=H;ctx.clearRect(0,0,W,H);
+  const counts={active:0,progress:0,archive:0};
+  projects.forEach(p=>{counts[p.status]=(counts[p.status]||0)+1;});
+  const data=[{label:'Active',count:counts.active,color:'#2dd4a0'},{label:'In Progress',count:counts.progress,color:'#ffad4f'},{label:'Archive',count:counts.archive,color:'#636b8a'}].filter(d=>d.count>0);
+  const total=data.reduce((s,d)=>s+d.count,0); if(!total) return;
+  const cx=110,cy=H/2,R=80;let angle=-Math.PI/2;
+  data.forEach(d=>{const slice=(d.count/total)*Math.PI*2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,R,angle,angle+slice);ctx.closePath();ctx.fillStyle=d.color;ctx.fill();angle+=slice;});
+  const theme=document.documentElement.getAttribute('data-theme');
+  const textColor=theme==='dark'?'#e8eaf0':'#1a1d2e';
+  data.forEach((d,i)=>{const y=cy-(data.length-1)*13+i*26;ctx.fillStyle=d.color;ctx.beginPath();ctx.arc(W-120,y,6,0,Math.PI*2);ctx.fill();ctx.fillStyle=textColor;ctx.font='13px Instrument Sans';ctx.textAlign='left';ctx.fillText(`${d.label}: ${d.count}`,W-108,y+4);});
+}
+
+// ========== CALENDAR ==========
+let calDate=new Date();
+function renderCalendar(){
+  const events=getCalEvents(),now=new Date();
+  const year=calDate.getFullYear(),month=calDate.getMonth();
+  const monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-title').textContent=monthNames[month]+' '+year;
+  const dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const firstDay=new Date(year,month,1).getDay();
+  const daysInMonth=new Date(year,month+1,0).getDate();
+  const daysInPrev=new Date(year,month,0).getDate();
+  let html=dayNames.map(d=>`<div class="cal-day-name">${d}</div>`).join('');
+  const eventMap={};
+  events.forEach(ev=>{if(!eventMap[ev.date])eventMap[ev.date]=[];eventMap[ev.date].push({type:'note',text:ev.text,id:ev.id});});
+  getProjects().filter(p=>p.deadline).forEach(p=>{const d=p.deadline;if(!eventMap[d])eventMap[d]=[];eventMap[d].push({type:'deadline',text:p.name+' (deadline)',id:p.id});});
+  for(let i=0;i<firstDay;i++){html+=`<div class="cal-day other-month"><span class="cal-day-num">${daysInPrev-firstDay+1+i}</span></div>`;}
+  for(let d=1;d<=daysInMonth;d++){const dateStr=year+'-'+String(month+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');const isToday=d===now.getDate()&&month===now.getMonth()&&year===now.getFullYear();const evs=eventMap[dateStr]||[];html+=`<div class="cal-day ${isToday?'today':''} ${evs.length?'has-events':''}" onclick="openCalModal('${dateStr}')" title="${esc(evs.map(e=>e.text).join(', '))}"><span class="cal-day-num">${d}</span>${evs.length?`<span class="event-count">${evs.length}</span>`:''}</div>`;}
+  const remaining=42-firstDay-daysInMonth;
+  for(let d=1;d<=remaining;d++){html+=`<div class="cal-day other-month"><span class="cal-day-num">${d}</span></div>`;}
+  document.getElementById('cal-grid').innerHTML=html;
+  const allDeadlines=[];
+  getProjects().filter(p=>p.deadline).forEach(p=>allDeadlines.push({name:p.name,date:p.deadline}));
+  events.forEach(ev=>allDeadlines.push({name:ev.text,date:ev.date}));
+  allDeadlines.sort((a,b)=>a.date.localeCompare(b.date));
+  const upcoming=allDeadlines.filter(d=>d.date>=now.toISOString().split('T')[0]).slice(0,8);
+  const overdue=allDeadlines.filter(d=>d.date<now.toISOString().split('T')[0]);
+  let dlHtml='';
+  upcoming.forEach(d=>{dlHtml+=`<div class="deadline-item"><div class="deadline-name">${esc(d.name)}</div><div class="deadline-date">${d.date}</div></div>`;});
+  overdue.slice(0,3).forEach(d=>{dlHtml+=`<div class="deadline-item"><div class="deadline-name">${esc(d.name)}</div><div class="deadline-date deadline-overdue">OVERDUE: ${d.date}</div></div>`;});
+  document.getElementById('deadline-list').innerHTML=dlHtml||'<div style="color:var(--text3);font-size:0.85rem;">No upcoming events</div>';
+}
+function calPrev(){calDate.setMonth(calDate.getMonth()-1);renderCalendar();}
+function calNext(){calDate.setMonth(calDate.getMonth()+1);renderCalendar();}
+
+function openCalModal(date){
+  document.getElementById('cal-modal-title').textContent='Events: '+date;
+  document.getElementById('ce-date').value=date;
+  document.getElementById('ce-text').value='';
+  const evs=getCalEvents().filter(e=>e.date===date);
+  document.getElementById('cal-events-list').innerHTML=evs.map(ev=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.88rem;"><span>${esc(ev.text)}</span><button class="btn btn-danger btn-sm" onclick="deleteCalEvent('${ev.id}','${date}')">Delete</button></div>`).join('');
+  openModal('cal-modal-overlay');
+}
+function closeCalModal(){closeModal('cal-modal-overlay');}
+function saveCalEvent(){const text=document.getElementById('ce-text').value.trim();if(!text)return;const date=document.getElementById('ce-date').value;const events=getCalEvents();events.push({id:uid(),date,text});LS.set('mp_calevents',events);closeCalModal();renderCalendar();}
+function deleteCalEvent(id,date){LS.set('mp_calevents',getCalEvents().filter(e=>e.id!==id));openCalModal(date);renderCalendar();}
+
+// ========== CLIENTS ==========
+function openClientModal(id){
+  const projects=getProjects();
+  document.getElementById('c-project').innerHTML=`<option value="">-- None --</option>`+projects.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  if(id){
+    const c=getClients().find(x=>x.id===id); if(!c) return;
+    document.getElementById('client-modal-title').textContent='Edit Client';
+    document.getElementById('c-id').value=c.id;
+    document.getElementById('c-name').value=c.name||'';
+    document.getElementById('c-phone').value=c.phone||'';
+    document.getElementById('c-email').value=c.email||'';
+    document.getElementById('c-project').value=c.projectId||'';
+    document.getElementById('c-pay-status').value=c.payStatus||'pending';
+    document.getElementById('c-amount').value=c.amount||'';
+  } else {
+    document.getElementById('client-modal-title').textContent='New Client';
+    document.getElementById('c-id').value='';
+    ['c-name','c-phone','c-email','c-amount'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
+    document.getElementById('c-pay-status').value='pending';
+  }
+  openModal('client-modal-overlay');
+}
+function closeClientModal(){closeModal('client-modal-overlay');}
+function saveClient(){
+  const name=document.getElementById('c-name').value.trim(); if(!name){alert('Name required');return;}
+  const id=document.getElementById('c-id').value||uid();
+  const clients=getClients(),idx=clients.findIndex(x=>x.id===id);
+  const c={id,name,phone:document.getElementById('c-phone').value.trim(),email:document.getElementById('c-email').value.trim(),projectId:document.getElementById('c-project').value,payStatus:document.getElementById('c-pay-status').value,amount:parseFloat(document.getElementById('c-amount').value)||0};
+  if(idx>=0)clients[idx]=c;else clients.unshift(c);
+  LS.set('mp_clients',clients);closeClientModal();renderClients();showToast('✓ Client saved');
+}
+function deleteClient(id){confirm2('Delete Client','This action cannot be undone.',()=>{LS.set('mp_clients',getClients().filter(c=>c.id!==id));renderClients();});}
+
+function renderClients(){
+  const q=(document.getElementById('client-search')?.value||'').toLowerCase();
+  const filterPay=document.getElementById('client-filter-pay')?.value||'';
+  let clients=getClients();
+  if(q)clients=clients.filter(c=>c.name.toLowerCase().includes(q)||(c.email||'').toLowerCase().includes(q));
+  if(filterPay)clients=clients.filter(c=>c.payStatus===filterPay);
+  const projects=getProjects();
+  const totalDebt=clients.filter(c=>c.payStatus!=='paid').reduce((s,c)=>s+(c.amount||0),0);
+  document.getElementById('clients-total-card').innerHTML=`<div class="stat-card" style="display:inline-block;min-width:200px;"><div class="stat-label">${t('total_debt')}</div><div class="stat-value stat-warning">${fmtCur(totalDebt)}</div></div><span style="margin-left:12px;font-size:0.85rem;color:var(--text3);">${clients.length} ${t('total_clients')}</span>`;
+  const grid=document.getElementById('clients-grid');
+  if(!clients.length){grid.innerHTML=`<div class="empty-state"><div class="empty-state-title">No clients yet</div></div>`;return;}
+  const payLabels={paid:'Paid',pending:'Pending',partial:'Partial'};
+  const payClass={paid:'pay-paid',pending:'pay-pending',partial:'pay-pending'};
+  grid.innerHTML=clients.map(c=>{
+    const proj=projects.find(p=>p.id===c.projectId);
+    const initials=c.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    return `<div class="client-card"><div class="client-avatar">${initials}</div><div class="client-name">${esc(c.name)}</div>${c.phone?`<div class="client-info">Tel: ${esc(c.phone)}</div>`:''} ${c.email?`<div class="client-info">Email: ${esc(c.email)}</div>`:''} ${proj?`<div class="client-project">Project: ${esc(proj.name)}</div>`:''}<div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;"><span class="pay-status ${payClass[c.payStatus]||'pay-pending'}">${payLabels[c.payStatus]||c.payStatus}</span><span style="font-size:0.85rem;font-weight:600;">${fmtCur(c.amount||0)}</span></div><div style="display:flex;gap:6px;margin-top:10px;"><button class="btn btn-secondary btn-sm" onclick="openClientModal('${c.id}')">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteClient('${c.id}')">Delete</button></div></div>`;
+  }).join('');
+}
+
+// ========== TASKS ==========
+function openTaskModal(id){
+  const projects=getProjects();
+  document.getElementById('t-project').innerHTML=`<option value="">-- No Project --</option>`+projects.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  if(id){
+    const task=getTasks().find(x=>x.id===id); if(!task) return;
+    document.getElementById('task-modal-title').textContent='Edit Task';
+    document.getElementById('t-id').value=task.id;
+    document.getElementById('t-title').value=task.title||'';
+    document.getElementById('t-desc').value=task.desc||'';
+    document.getElementById('t-project').value=task.projectId||'';
+    document.getElementById('t-priority').value=task.priority||'medium';
+    document.getElementById('t-deadline').value=task.deadline||'';
+  } else {
+    document.getElementById('task-modal-title').textContent='New Task';
+    document.getElementById('t-id').value='';
+    ['t-title','t-desc','t-deadline'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
+    document.getElementById('t-priority').value='medium';
+  }
+  openModal('task-modal-overlay');
+}
+function closeTaskModal(){closeModal('task-modal-overlay');}
+function saveTask(){
+  const title=document.getElementById('t-title').value.trim(); if(!title){alert('Title required');return;}
+  const id=document.getElementById('t-id').value||uid();
+  const tasks=getTasks(),idx=tasks.findIndex(x=>x.id===id);
+  const task={id,title,desc:document.getElementById('t-desc').value.trim(),projectId:document.getElementById('t-project').value,priority:document.getElementById('t-priority').value,deadline:document.getElementById('t-deadline').value,done:idx>=0?tasks[idx].done:false,createdAt:idx>=0?tasks[idx].createdAt:new Date().toISOString().split('T')[0]};
+  if(idx>=0)tasks[idx]=task;else tasks.push(task);
+  LS.set('mp_tasks',tasks);closeTaskModal();renderTasks();showToast('✓ Task saved');
+}
+function toggleTask(id){const tasks=getTasks();const tk=tasks.find(x=>x.id===id);if(tk){tk.done=!tk.done;LS.set('mp_tasks',tasks);renderTasks();}}
+function deleteTask(id){confirm2('Delete Task','',()=>{LS.set('mp_tasks',getTasks().filter(t=>t.id!==id));renderTasks();});}
+
+function renderTasks(){
+  const filterProj=document.getElementById('task-filter-proj')?.value||'';
+  const filterStatus=document.getElementById('task-filter-status')?.value||'';
+  const filterPri=document.getElementById('task-filter-priority')?.value||'';
+  const sort=document.getElementById('task-sort')?.value||'deadline';
+  const projects=getProjects();
+  const sel=document.getElementById('task-filter-proj');
+  if(sel){const cur=sel.value;sel.innerHTML=`<option value="">All Projects</option>`+projects.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');sel.value=cur;}
+  let tasks=getTasks();
+  const now=new Date().toISOString().split('T')[0];
+  if(filterProj)tasks=tasks.filter(t=>t.projectId===filterProj);
+  if(filterStatus==='done')tasks=tasks.filter(t=>t.done);
+  if(filterStatus==='pending')tasks=tasks.filter(t=>!t.done);
+  if(filterStatus==='overdue')tasks=tasks.filter(t=>!t.done&&t.deadline&&t.deadline<now);
+  if(filterPri)tasks=tasks.filter(t=>t.priority===filterPri);
+  const priOrder={high:0,medium:1,low:2};
+  if(sort==='deadline')tasks.sort((a,b)=>(a.deadline||'9').localeCompare(b.deadline||'9'));
+  if(sort==='priority')tasks.sort((a,b)=>(priOrder[a.priority]||1)-(priOrder[b.priority]||1));
+  const byProject={};
+  tasks.forEach(t=>{const key=t.projectId||'__none__';if(!byProject[key])byProject[key]=[];byProject[key].push(t);});
+  const container=document.getElementById('tasks-by-project');
+  if(!tasks.length){container.innerHTML=`<div class="empty-state"><div class="empty-state-title">No tasks</div></div>`;return;}
+  let html='';
+  Object.entries(byProject).forEach(([projId,ptasks])=>{
+    const proj=projects.find(p=>p.id===projId);
+    const projName=proj?proj.name:'No Project';
+    const done=ptasks.filter(t=>t.done).length;
+    const pct=ptasks.length?Math.round(done/ptasks.length*100):0;
+    html+=`<div style="margin-bottom:22px;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><div style="font-family:var(--font-display);font-weight:700;font-size:0.95rem;">${esc(projName)}</div><span style="font-size:0.78rem;color:var(--text3);">${done}/${ptasks.length} done</span></div><div class="progress-bar" style="margin-bottom:12px;"><div class="progress-fill${pct>=100?' full':''}" style="width:${pct}%"></div></div>${ptasks.map(task=>taskItem(task,now)).join('')}</div>`;
+  });
+  container.innerHTML=html;
+}
+
+function taskItem(task,now){
+  const priClass={high:'priority-high',medium:'priority-med',low:'priority-low'};
+  const isOverdue=!task.done&&task.deadline&&task.deadline<now;
+  return `<div class="task-item ${task.done?'done':''} ${isOverdue?'task-overdue':''}"><div class="task-check ${task.done?'checked':''}" onclick="toggleTask('${task.id}')">${task.done?`<svg width="12" height="12" fill="none" stroke="#fff" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2.5" stroke-linecap="round"/></svg>`:''}</div><div style="flex:1;"><div style="display:flex;align-items:center;"><span class="task-title">${esc(task.title)}</span><span class="priority-badge ${priClass[task.priority]||'priority-med'}">${task.priority}</span></div>${task.desc?`<div class="task-meta">${esc(task.desc)}</div>`:''} ${task.deadline?`<div class="task-meta" style="${isOverdue?'color:var(--danger)':''}">Due: ${task.deadline}${isOverdue?' — OVERDUE':''}</div>`:''}</div><div style="display:flex;gap:6px;"><button class="btn btn-secondary btn-sm" onclick="openTaskModal('${task.id}')">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteTask('${task.id}')">Del</button></div></div>`;
+}
+
+// ========== NOTES ==========
+function openNoteModal(id){
+  if(id){const n=getNotes().find(x=>x.id===id);if(!n)return;document.getElementById('note-modal-title').textContent='Edit Note';document.getElementById('n-id').value=n.id;document.getElementById('n-title').value=n.title||'';document.getElementById('n-text').value=n.text||'';}
+  else{document.getElementById('note-modal-title').textContent='New Note';document.getElementById('n-id').value='';document.getElementById('n-title').value='';document.getElementById('n-text').value='';}
+  openModal('note-modal-overlay');
+}
+function closeNoteModal(){closeModal('note-modal-overlay');}
+function saveNote(){
+  const title=document.getElementById('n-title').value.trim(); if(!title){alert('Title required');return;}
+  const id=document.getElementById('n-id').value||uid();
+  const notes=getNotes(),idx=notes.findIndex(x=>x.id===id);
+  const n={id,title,text:document.getElementById('n-text').value.trim(),createdAt:idx>=0?notes[idx].createdAt:new Date().toISOString().split('T')[0],pinned:idx>=0?notes[idx].pinned:false};
+  if(idx>=0)notes[idx]=n;else notes.unshift(n);
+  LS.set('mp_notes',notes);closeNoteModal();renderNotes();showToast('✓ Note saved');
+}
+function deleteNote(id){confirm2('Delete Note','',()=>{LS.set('mp_notes',getNotes().filter(n=>n.id!==id));renderNotes();});}
+function pinNote(id){const notes=getNotes();const n=notes.find(x=>x.id===id);if(n){n.pinned=!n.pinned;LS.set('mp_notes',notes);renderNotes();}}
+
+function renderNotes(){
+  const q=(document.getElementById('notes-search')?.value||'').toLowerCase();
+  let notes=getNotes();
+  if(q)notes=notes.filter(n=>n.title.toLowerCase().includes(q)||(n.text||'').toLowerCase().includes(q));
+  notes.sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||b.createdAt.localeCompare(a.createdAt));
+  const grid=document.getElementById('notes-grid');
+  if(!notes.length){grid.innerHTML=`<div class="empty-state"><div class="empty-state-title">No notes yet</div></div>`;return;}
+  grid.innerHTML=notes.map(n=>`<div class="note-card ${n.pinned?'pinned':''}"><div class="note-title">${esc(n.title)}</div>${n.text?`<div class="note-text">${esc(n.text)}</div>`:''}<div class="note-footer"><span class="note-date">${n.createdAt}</span><div class="note-actions"><button class="btn btn-ghost btn-sm" onclick="pinNote('${n.id}')">${n.pinned?'Unpin':'Pin'}</button><button class="btn btn-secondary btn-sm" onclick="openNoteModal('${n.id}')">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteNote('${n.id}')">Del</button></div></div></div>`).join('');
+}
+
+// ========== CONFIRM ==========
+let confirmCallback=null;
+function confirm2(title,text,cb){
+  document.getElementById('confirm-title').textContent=title;
+  document.getElementById('confirm-text').textContent=text;
+  confirmCallback=cb;
+  document.getElementById('confirm-overlay').classList.add('open');
+  document.getElementById('confirm-ok').onclick=()=>{closeConfirm();if(confirmCallback)confirmCallback();};
+}
+function closeConfirm(){document.getElementById('confirm-overlay').classList.remove('open');}
+
+// ========== UTILS ==========
+function uid(){return Math.random().toString(36).slice(2,10)+Date.now().toString(36);}
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ========== INIT ==========
+(function init(){
+  applySettings();
+  const session=getSession();
+  if(session){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='flex';
+    setTimeout(()=>{
+      document.getElementById('app').classList.add('visible');
+      document.getElementById('sidebar-user').textContent=session.fname+' '+session.lname;
+      applyI18n(); navigate('projects'); startClock();
+    },30);
+  } else {
+    document.getElementById('app').style.display='flex';
+  }
+  window.addEventListener('resize',()=>{
+    if(currentSection==='analytics') renderAnalytics();
+    if(currentSection==='progress'){const sorted=[...getProjects()].sort((a,b)=>(b.income||0)-(a.income||0));drawDonut(sorted.slice(0,6));}
+    const pg=document.getElementById('progress-main-grid');
+    if(pg) pg.style.gridTemplateColumns=window.innerWidth<700?'1fr':'340px 1fr';
+  });
+  const pg=document.getElementById('progress-main-grid');
+  if(pg&&window.innerWidth<700) pg.style.gridTemplateColumns='1fr';
+})();
+</script>
 </body>
 </html>
